@@ -1,0 +1,121 @@
+<h3>What are addresses? How are they distinct from wallets?</h3>
+
+<p>
+A bitcoin address is a string of alphanumeric characters which represent a destination for a Bitcoin payment.
+</p>
+
+<p>
+A bitcoin wallet consists of private keys which correspond to bitcoin addresses (sort of like having keys to PO boxes). Basically, I generate an address, and someone sends me a bitcoin. Now, in my wallet I have the private key which authenticates my 'ownership' of the address.Once the transaction is verified, the ledger registers this address as having X amount of bitcoin.
+</p>
+
+<p>
+Bitcoin is never really owned in the sense that a bitcoin is saved on my computer. Really, the total amount of bitcoin I own is equal to the total number of bitcoin attributed to addresses that I have private keys for.
+</p>
+
+<p>
+Bitcoin addresses are an example of public-key encryption. (via wikipedia) - an analogy to public-key encryption is that of a locked mailbox with a mail slot. The mailbox is exposed and accessible to the public (anyone who wants to can drop a message through the slot). However, only the person who possesses the key can open the mailbox and read the message. The same is the case for bitcoin addresses. Anybody can send bitcoins to an address, but only the person who owns the corresponding private key has access to the bitcoins inside.
+</p>
+
+<p>
+So, the questions are:
+  - how do you generate an address?
+  - how do I ensure that I am the only one who has access to that address?
+  - how do I make sure that the address is unique from everyone else's?
+</p>
+
+<h3>
+The answer to all of these questions is:
+</h3>
+
+<p>
+Some guy named Diophantus was chatting up some girls and was like "hey ladies, I've been playing around with these equations and they sure are curvy! In the future, some advances in mathematics will happen and then also other stuff will happen and then these sorts of curves will be used in cryptography in the 20th century by some guys named Miller and Koblitz and then I think their work is going to be built upon and used to generate bitcoin addresses for drug dealers and libertarians and also i'm going to inspire some guy named Fermat to do some cool stuff/vandalize the margins of my translated works and also hash functions will exist. so, let me help you realize your diofantasies...."
+</p>
+
+
+<h3>How it all works:</h3>
+
+<p>
+Bitcoin addresses are generated using Elliptic curve cryptography. The below step by step may not be clear at first, but in the following discussion I will explain it all!
+</p>
+
+<p>Step by step:
+
+<ul>
+<li>0a. For the bitcoin protocall, the elliptic curve of the equation y^2 = x^3 + 7 mod(p) is defined over the natural numbers 1 to p where p= 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1.</li>
+
+<li>0b.  A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
+
+<li>1. A private key is chosen. This is a random 256 bit number.</li>
+
+<li>2. Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in a public key.</li>
+</ul>
+<p>
+Because of the nature of this setup, computing this multiplication is very easy. However, deriving the private key based on the result of the multiplication is very difficult. This problem is called 'the elliptic curve discrete 'logarithm problem', and it is difficulty of this problem which keeps your bitcoins secure!
+</p>
+
+<p>
+To gain a basic understanding of elliptic curve cryptography and why it works, I will work through a few 'pre-requesite' topics. These will be in the following order:
+</p>
+
+<ul>
+<li>(1) - Modular Arithmetic</li>
+<li>(2) - The Discrete Logarithm Problem</li>
+<li>(3) - What is an elliptic curve?</li>
+<li>(4) - What is elliptic curve addition and multiplication?</li>
+<li>(5) - Why is elliptic curve multiplication equivalent to the discreet log problem?</li>
+<li>(6) - How to generate public/private keys</li>
+<li>(7) - Extended Euclidean Algorithm</li>
+<li>(8) - Choosing a private key</li>
+</ul>
+
+<h3>(1) In the beginning, there was modular arithmetic.</h3>
+
+<p>
+(via wikipedia) - In mathematics, modular arithmetic is a system of arithmetic for integers (NOTE THIS!!!), where numbers "wrap around" upon reaching a certain value — the modulus.
+</p>
+
+<p>
+For a positive integer n, two integers a and b are said to be congruent modulo n, written:
+</p>
+
+<p>
+a == b mod(n) if their difference a − b is an integer multiple of n (or n divides a − b). The number n is called the modulus of the congruence. wut?
+</p>
+
+<p>
+n divides (a-b): so for example, 29 =  7  mod 11. This is because 29-7 = 22, and 11 divides into 22 evenly! Another way to think about it is: if a==b mod n, then when you divide b by n, the remainder will be a. For example, 2 = 5 mod 3. It is possible to divide 3 into 5 once, and there is 2 leftover!
+</p>
+
+<p>
+Another common way to think about modular arithmetic is thinking about a clock. Say it is 7 oclock. If you add 8 hours to 7 oclock, you will get 15 oclock, which is equal to 3 oclock! In modular arithmetic, define 12am/pm = 0, and we are adding mod 12. So 15 mod 12 == 3. The group of integers mod 12 is = (0,1,2,3,4,5,6,7,8,9,10,11). 12 is not written, since 0 = 12 mod 12!
+</p>
+
+<p> Multiplication works exactly as you would expect. 8*3 mod 5 = 8+8+8 mod 5 = 24 mod 5 = 4. In contrast, modular division is not always intuitive. ###provide discussion if necessary later on###
+</p>
+
+<h3>Discrete logs are annoying</h3>
+
+<p>So, now that you've had a crash course in modular arithmetic, we will discuss the discrete logarithm problem. It is defined as such:</p>
+<ul> We are told that B = a^x mod p. Given B, a, and p, lets solve for x!</ul>
+
+<p>At first glance, this might not seem like that big of a deal. Lets take the example, 3 = 4^x mod 11 and try to solve for x. After a few moments and some mental math, you may be able to work out that x = 4. (4^4 = 264 = 3 mod 11.) Nice job! However, what if we wanted to solve something like 3 = 4^x mod 113? This is not something we'd want to do in our head, we would much prefer to use a computer!
+</p>
+<p>
+Using these small numbers, a computer could easily brute force through powers of 4 until it reached the solution. But, smart human beings have found that if the numbers we are using for 'x', 'p', and 'a' are very large (100 digits long), brute force is no longer an option. In fact, there is no efficient algorithm for solving for x!
+</p>
+
+<p>Now we know that if B = a^x mod p, and we are given B, a, and p, it is extremely difficult to solve for x. Now, lets say we wanted to construct some sort of cryptogrpahic system out of this, how would that be structured? Well, imagine that everybody in the world uses the same 'a' and 'p'. If a person were to choose a number 'x' and compute a^x = B, he could share B with the world, and be comfortable with the fact that nobody would be able to figure out x! </p>
+
+<p>In Bitcoin address terms, x would be the private key we are choosing, and B would be the public key. Now, because it is impossible to find x (the private key) even while knowing B (the public key), we can share B (the public key) with the world. In order order to prove we have ownership of the public key, we now just need to prove that we know x (the private key). </p>
+
+<p>At this point, you're probably thinking: "wait, i thought bitcoins used Elliptic Curve cryptography to create secure addresses, what is all of this discrete log mumbo jumbo???" And you'd be right to think that. Bitcoins are not created using discrete logs. It turns out that Ellitpic curve multiplication mod p creates a similar problem to the Discrete Log problem, called the Elliptic Curve Discrete Log problem. These problems are equivalent, that is, solving the Elliptic Curve Discrete logarithm problem is the same as solving the Discrete Logarithm problem, and is just as difficult! </p>
+
+
+
+
+
+
+
+
+
+
