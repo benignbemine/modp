@@ -1,3 +1,7 @@
+<head>
+<link rel="stylesheet" type="text/css" href="bitcoin.css">
+</head>
+<body>
 <h3>What are addresses? How are they distinct from wallets?</h3>
 
 <p>
@@ -18,9 +22,11 @@ Bitcoin addresses are an example of public-key encryption. (via wikipedia) - an 
 
 <p>
 So, the questions are:
-  - how do you generate an address?
-  - how do I ensure that I am the only one who has access to that address?
-  - how do I make sure that the address is unique from everyone else's?
+  <ul>
+  <li>- how do you generate an address?</li>
+ <li> - how do I ensure that I am the only one who has access to that address?</li>
+  <li>- how do I make sure that the address is unique from everyone else's?</li>
+  </ul>
 </p>
 
 <h3>
@@ -40,15 +46,15 @@ Bitcoin addresses are generated using Elliptic curve cryptography. The below ste
 
 <p>Step by step:
 
-<ul>
-<li>0a. For the bitcoin protocall, the elliptic curve of the equation y^2 = x^3 + 7 mod(p) is defined over the natural numbers 1 to p where p= 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1.</li>
+<ol>
+<li>For the bitcoin protocall, the elliptic curve of the equation y^2 = x^3 + 7 mod(p) is defined over the natural numbers 1 to p where p= 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1.</li>
 
-<li>0b.  A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
+<li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
 
-<li>1. A private key is chosen. This is a random 256 bit number.</li>
+<li>A private key is chosen. This is a random 256 bit number.</li>
 
-<li>2. Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in a public key.</li>
-</ul>
+<li>Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in a public key.</li>
+</ol>
 <p>
 Because of the nature of this setup, computing this multiplication is very easy. However, deriving the private key based on the result of the multiplication is very difficult. This problem is called 'the elliptic curve discrete 'logarithm problem', and it is difficulty of this problem which keeps your bitcoins secure!
 </p>
@@ -93,7 +99,7 @@ Another common way to think about modular arithmetic is thinking about a clock. 
 <p> Multiplication works exactly as you would expect. 8*3 mod 5 = 8+8+8 mod 5 = 24 mod 5 = 4. In contrast, modular division is not always intuitive. ###provide discussion if necessary later on###
 </p>
 
-<h3>Discrete logs are annoying</h3>
+<h3>(2) Discrete logs are annoying</h3>
 
 <p>So, now that you've had a crash course in modular arithmetic, we will discuss the discrete logarithm problem. It is defined as such:</p>
 <ul> We are told that B = a^x mod p. Given B, a, and p, lets solve for x!</ul>
@@ -101,14 +107,20 @@ Another common way to think about modular arithmetic is thinking about a clock. 
 <p>At first glance, this might not seem like that big of a deal. Lets take the example, 3 = 4^x mod 11 and try to solve for x. After a few moments and some mental math, you may be able to work out that x = 4. (4^4 = 264 = 3 mod 11.) Nice job! However, what if we wanted to solve something like 3 = 4^x mod 113? This is not something we'd want to do in our head, we would much prefer to use a computer!
 </p>
 <p>
-Using these small numbers, a computer could easily brute force through powers of 4 until it reached the solution. But, smart human beings have found that if the numbers we are using for 'x', 'p', and 'a' are very large (100 digits long), brute force is no longer an option. In fact, there is no efficient algorithm for solving for x!
+Using these small numbers, a computer could easily brute force through powers of 4 until it reached the solution. But, smart human beings have found that if the numbers we are using for 'x', 'p', and 'a' are very large (100 digits long), brute force is no longer an option. In fact, there is no efficient computer algorithm for solving for x!
 </p>
 
 <p>Now we know that if B = a^x mod p, and we are given B, a, and p, it is extremely difficult to solve for x. Now, lets say we wanted to construct some sort of cryptogrpahic system out of this, how would that be structured? Well, imagine that everybody in the world uses the same 'a' and 'p'. If a person were to choose a number 'x' and compute a^x = B, he could share B with the world, and be comfortable with the fact that nobody would be able to figure out x! </p>
 
 <p>In Bitcoin address terms, x would be the private key we are choosing, and B would be the public key. Now, because it is impossible to find x (the private key) even while knowing B (the public key), we can share B (the public key) with the world. In order order to prove we have ownership of the public key, we now just need to prove that we know x (the private key). </p>
 
-<p>At this point, you're probably thinking: "wait, i thought bitcoins used Elliptic Curve cryptography to create secure addresses, what is all of this discrete log mumbo jumbo???" And you'd be right to think that. Bitcoins are not created using discrete logs. It turns out that Ellitpic curve multiplication mod p creates a similar problem to the Discrete Log problem, called the Elliptic Curve Discrete Log problem. These problems are equivalent, that is, solving the Elliptic Curve Discrete logarithm problem is the same as solving the Discrete Logarithm problem, and is just as difficult! </p>
+<p>At this point, you're probably thinking: "wait, i thought bitcoins used Elliptic Curve cryptography to create secure addresses, what is all of this discrete log mumbo jumbo???" And you'd be right to think that. Bitcoins are not created using discrete logs. It turns out that Ellitpic curve multiplication mod p creates a similar problem to the Discrete Log problem, called the Elliptic Curve Discrete Log problem. These problems are equivalent, that is, solving the Elliptic Curve Discrete logarithm problem is the same as solving the Discrete Logarithm problem, and is just as difficult! I'll explain... </p>
+
+<h3>(3) Are elliptic curves similar to giraffes? </h3>
+
+<p>At first glance, elliptic curves and giraffes don't have a lot in common. But, if you look closer, you'll notice that in fact they don't have a lot in common, and that your first impression was accurate. For example, giraffes can eat leaves and they can run and they can poop; elliptic curves can't even do one of those things! C'mon elliptic curves, get your head in the game.</p>
+
+<h4>But if they're not comparable to giraffes, what could elliptic curves possibly be?</h4>
 
 
 
@@ -119,3 +131,7 @@ Using these small numbers, a computer could easily brute force through powers of
 
 
 
+
+
+
+</body>
