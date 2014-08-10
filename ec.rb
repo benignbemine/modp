@@ -37,15 +37,22 @@ class ECurve
     m = get_slope(point_1, point_2)
 
     # calculate addition
-    x_3 = (point_1.x - point_2.x) % @p
+    x_3 = (m*m - point_1.x - point_2.x) % @p
     y_3 = (m * (point_1.x - x_3) - point_1.y) % @p
 
     # final point
     Point.new(x_3, y_3)
   end
 
-  def ec_multiply point_1, k
-
+  def ec_multiply(point_1, k)
+    puts k
+    if k == 0
+      return point_1
+    elsif k.odd?
+      ec_add(point_1, ec_multiply(point_1, k-1))
+    else
+      ec_multiply(ec_add(point_1,point_1), k/2)
+    end
   end
 
   def get_slope (point_1, point_2)
@@ -79,18 +86,20 @@ class ECurve
 end
 
 
+
 ############
-# a = 0, b = 7, p = 17
-ec = ECurve.new(0, 7, 17)
-p ec.inverse_mod(6, 11) == 2
+# a = 4 b = 4, p = 5
+p = 2**256 - 2**32 - 2**9 - 2**8 - 2**7 - 2**6 - 2**4 - 1
+ec = ECurve.new(0, 7, p)
 
-p1 = Point.new(1, 2)
-p2 = Point.new(4, 3)
+starting_point = Point.new(55066263022277343669578718895168534326250603453777594175500187360389116729240, 32670510020758816978083085130507043184471273380659243275938904335757337482424)
 
-p ec.get_slope(p1, p2)
-p ec.get_slope(p1, p1)
+private_key = 11253563012059685825953619222107823549092147699031672238385790369351542642469-2
 
-p ec.ec_add(p1,p2)
+#p ec.ec_multiply(starting_point, private_key)
+
+ p ec.ec_multiply(starting_point,2)
+ p ec.ec_add(ec.ec_add(ec.ec_add(starting_point, starting_point), starting_point),starting_point)
 # private_key = 8
 
 # pub_key = ec_get_pub_key private_key
