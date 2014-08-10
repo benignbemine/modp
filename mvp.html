@@ -63,47 +63,45 @@
       </p>
 
       <p>
-      (0,0) (0,1) ... (0,p-1)
-      (1,0) .........
-      ...............
-      ...............
-      ...............
-      (p-1,0)........ (p-1,p-1)
+        (0,0) (0,1) ... (0,p-1)
+        (1,0) .........
+        ...............
+        ...............
+        ...............
+        (p-1,0)........ (p-1,p-1)
       </p>
 
       <p>
-      As you can imagine, an elliptic curve plotted over a prime field looks significantly different than an elliptic curve plotted over the real numbers. A prime field contains a finite number of elements, so instead of a continuous line, we see a scattering of dots.
+        As you can imagine, an elliptic curve plotted over a prime field looks significantly different than an elliptic curve plotted over the real numbers. A prime field contains a finite number of elements, so instead of a continuous line, we see a scattering of dots.
       </p>
 
       <p>
-      Here is why:
+        Here is why:
       </p>
 
       <p>
-      The set of points in the prime field Fp looks like this. The x and y coordinates each range from 0 to (p-1):
+        The set of points in the prime field Fp looks like this. The x and y coordinates each range from 0 to (p-1):
       </p>
 
       <p>
-      Not every element in the prime field will result in a solution to the elliptic curve equation (y^2 = x^3 + ax + b).
+        Not every element in the prime field will result in a solution to the elliptic curve equation (y^2 = x^3 + ax + b).
       </p>
 
       <p>
-      Taking each one of these points and plugging them into our elliptic curve equation (y^2 = x^3 + ax + b) we see which ones will yeild solutions. Those that do will be included in the graph of the elliptic curve over the prime field.
+        Taking each one of these points and plugging them into our elliptic curve equation (y^2 = x^3 + ax + b) we see which ones will yeild solutions. Those that do will be included in the graph of the elliptic curve over the prime field.
       </p>
 
       <p>
-      Note, for every point (x,y) that is a solution to the elliptic curve, the  corresponding point (x, -y modp) is also a solution! This is because y^2 == (-y)^2 mod p.
+        Note, for every point (x,y) that is a solution to the elliptic curve, the  corresponding point (x, -y modp) is also a solution! This is because y^2 == (-y)^2 mod p.
       </p>
 
       <p>
-      Below, pictured is an elliptic curve graphed over a prime field. You can see that for each x which yeilds a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
+        Below, pictured is an elliptic curve graphed over a prime field. You can see that for each x which yeilds a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
       </p>
 
       <p>
-      3.) How does elliptic curve addition work over a prime field?
+        3.) How does elliptic curve addition work over a prime field?
       </p>
-
-
 
     </div>
   </body>
