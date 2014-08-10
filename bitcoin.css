@@ -1,0 +1,9 @@
+body {
+  max-width: 60%;
+  margin: auto;
+  padding: 10px 0 10px 0;
+}
+
+blockquote {
+  font-style: italic;
+}
