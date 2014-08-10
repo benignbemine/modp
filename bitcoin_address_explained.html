@@ -1,182 +1,235 @@
-<head>
-<link rel="stylesheet" type="text/css" href="bitcoin.css">
-</head>
-<body>
-<h3>What are addresses? How are they distinct from wallets?</h3>
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<p>
-A bitcoin address is a string of alphanumeric characters which represent a destination for a Bitcoin payment.
-</p>
+        <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
+        <link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.8.0.min.js"></script>
+    </head>
+  <body>
+    <div class="content">
 
-<p>
-A bitcoin wallet consists of private keys which correspond to bitcoin addresses (sort of like having keys to PO boxes). Basically, I generate an address, and someone sends me a bitcoin. Now, in my wallet I have the private key which authenticates my 'ownership' of the address.Once the transaction is verified, the ledger registers this address as having X amount of bitcoin.
-</p>
+    <h3>What are addresses? How are they distinct from wallets?</h3>
 
-<p>
-Bitcoin is never really owned in the sense that a bitcoin is saved on my computer. Really, the total amount of bitcoin I own is equal to the total number of bitcoin attributed to addresses that I have private keys for.
-</p>
+    <p>
+      A bitcoin address is a string of alphanumeric characters which represent a destination for a Bitcoin payment.
+    </p>
 
-<p>
-Bitcoin addresses are an example of public-key encryption. (via wikipedia) - an analogy to public-key encryption is that of a locked mailbox with a mail slot. The mailbox is exposed and accessible to the public (anyone who wants to can drop a message through the slot). However, only the person who possesses the key can open the mailbox and read the message. The same is the case for bitcoin addresses. Anybody can send bitcoins to an address, but only the person who owns the corresponding private key has access to the bitcoins inside.
-</p>
+    <p>
+      A bitcoin wallet consists of private keys which correspond to bitcoin addresses (sort of like having keys to PO boxes). Basically, I generate an address, and someone sends me a bitcoin. Now, in my wallet I have the private key which authenticates my 'ownership' of the address.Once the transaction is verified, the ledger registers this address as having X amount of bitcoin.
+    </p>
 
-<p>
-So, the questions are:
-  <ul>
-  <li>- how do you generate an address?</li>
- <li> - how do I ensure that I am the only one who has access to that address?</li>
-  <li>- how do I make sure that the address is unique from everyone else's?</li>
-  </ul>
-</p>
+    <p>
+      Bitcoin is never really owned in the sense that a bitcoin is saved on my computer. Really, the total amount of bitcoin I own is equal to the total number of bitcoin attributed to addresses that I have private keys for.
+    </p>
 
-<h3>
-The answer to all of these questions is:
-</h3>
+    <p>
+      Bitcoin addresses are an example of public-key encryption. (via wikipedia) - an analogy to public-key encryption is that of a locked mailbox with a mail slot. The mailbox is exposed and accessible to the public (anyone who wants to can drop a message through the slot). However, only the person who possesses the key can open the mailbox and read the message. The same is the case for bitcoin addresses. Anybody can send bitcoins to an address, but only the person who owns the corresponding private key has access to the bitcoins inside.
+    </p>
 
-<p>
-Some guy named Diophantus was chatting up some girls and was like "hey ladies, I've been playing around with these equations and they sure are curvy! In the future, some advances in mathematics will happen and then also other stuff will happen and then these sorts of curves will be used in cryptography in the 20th century by some guys named Miller and Koblitz and then I think their work is going to be built upon and used to generate bitcoin addresses for drug dealers and libertarians and also i'm going to inspire some guy named Fermat to do some cool stuff/vandalize the margins of my translated works and also hash functions will exist. so, let me help you realize your diofantasies...."
-</p>
+    <p>
+      So, the questions are:
+      <ul>
+        <li>- how do you generate an address?</li>
+        <li> - how do I ensure that I am the only one who has access to that address?</li>
+        <li>- how do I make sure that the address is unique from everyone else's?</li>
+      </ul>
+    </p>
 
+    <h3>
+      The answer to all of these questions is:
+    </h3>
 
-<h3>How it all works:</h3>
-
-<p>
-Bitcoin addresses are generated using Elliptic curve cryptography. The below step by step may not be clear at first, but in the following discussion I will explain it all!
-</p>
-
-<p>Step by step:
-
-<ol>
-<li>For the bitcoin protocall, the elliptic curve of the equation y^2 = x^3 + 7 mod(p) is defined over the natural numbers 1 to p where p= 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1.</li>
-
-<li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
-
-<li>A private key is chosen. This is a random 256 bit number.</li>
-
-<li>Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in a public key.</li>
-</ol>
-<p>
-Because of the nature of this setup, computing this multiplication is very easy. However, deriving the private key based on the result of the multiplication is very difficult. This problem is called 'the elliptic curve discrete 'logarithm problem', and it is difficulty of this problem which keeps your bitcoins secure!
-</p>
-
-<p>
-To gain a basic understanding of elliptic curve cryptography and why it works, I will work through a few topics. These will be in the following order:
-</p>
-
-<ul>
-<li>(1) - Modular Arithmetic</li>
-<li>(1) - Abstract Algebrah</li>
-<li>(2) - The Discrete Logarithm Problem</li>
-<li>(3) - What is an elliptic curve?</li>
-<li>(4) - What is elliptic curve addition and multiplication?</li>
-<li>(5) - Why is elliptic curve multiplication equivalent to the discreet log problem?</li>
-<li>(6) - How to generate public/private keys</li>
-<li>(7) - Extended Euclidean Algorithm</li>
-<li>(8) - Choosing a private key</li>
-</ul>
-
-<h3>(1) In the beginning, there was modular arithmetic.</h3>
-
-<p>
-(via wikipedia) - In mathematics, modular arithmetic is a system of arithmetic for integers (NOTE THIS!!!), where numbers "wrap around" upon reaching a certain value — the modulus.
-</p>
-
-<p>
-For a positive integer n, two integers a and b are said to be congruent modulo n, written:
-</p>
-
-<p>
-a == b mod(n) if their difference a − b is an integer multiple of n (or n divides a − b). The number n is called the modulus of the congruence. wut?
-</p>
-
-<p>
-n divides (a-b): so for example, 29 =  7  mod 11. This is because 29-7 = 22, and 11 divides into 22 evenly! Another way to think about it is: if a==b mod n, then when you divide b by n, the remainder will be a. For example, 2 = 5 mod 3. It is possible to divide 3 into 5 once, and there is 2 leftover!
-</p>
-
-<p>
-Another common way to think about modular arithmetic is thinking about a clock. Say it is 7 oclock. If you add 8 hours to 7 oclock, you will get 15 oclock, which is equal to 3 oclock! In modular arithmetic, define 12am/pm = 0, and we are adding mod 12. So 15 mod 12 == 3. The group of integers mod 12 is = (0,1,2,3,4,5,6,7,8,9,10,11). 12 is not written, since 0 = 12 mod 12!
-</p>
-
-<p> Multiplication works exactly as you would expect. 8*3 mod 5 = 8+8+8 mod 5 = 24 mod 5 = 4. In contrast, modular division is not always intuitive. ###provide discussion if necessary later on###
-</p>
-
-<h3>(2) - A little bit of Algebrah</h3>
-
-<p>It will be useful to define a Group, and in particular, a cyclic group. A group is a set of elements together with an operation that combines any two of its elements to form a third element. A group must satisfy four basic rules:</p>
-
-<ol>
-  <li>Closure - Performing the operation on any two elements in the set will never produce a number outside the set. For example, the set of integers under the operation 'addition' satisfy this condition because you can never add two integers together to get something other than an integer. In contrast, the set of integers under the operation 'division' do not satisfy this condtion. This is because, you the result of division of two integers is not always an integer: 5/3 is not an integer, and neither is 1/2. </li>
-  <li>Associativity - when you have an expression which contains multiple occurences of the same operation (something like 1+2+3+4+5) then the order that you perform the operations does not matter. For example, (1+2)+(3+4)+5 = 15 = 1+(2+3)+(4+5). Without changing the order of the numbers, we could shift the parthenses and there was no change to the result.</li>
-  <li>Identity - The set must contain an 'identity element' which, if combined with another element of the set using the defined operation, will return that other element. 0 is the identity element under addition (1 + 0 = 1); 1 is the identity under multiplication (9 x 1 = 9)</li>
-  <li>Invertibility - For every element in the set, there exists a unique 'inverse' element which, when combined under the operation, will result in the identity element. For example, in the set of integers under addition, an elements inverse is just the negative value of that element (1+ -1 = 0) </li>
-</ol>
+    <p>
+      Some guy named Diophantus was chatting up some girls and was like "hey ladies, I've been playing around with these equations and they sure are curvy! In the future, some advances in mathematics will happen and then also other stuff will happen and then these sorts of curves will be used in cryptography in the 20th century by some guys named Miller and Koblitz and then I think their work is going to be built upon and used to generate bitcoin addresses for drug dealers and libertarians and also i'm going to inspire some guy named Fermat to do some cool stuff/vandalize the margins of my translated works and also hash functions will exist. so, let me help you realize your diofantasies...."
+    </p>
 
 
-<p>A cyclic group is just a group where all of the elements in the set are the result of one element (we'll call this a generator) on itself. For example, say you have the number 1, and you allow yourself to perform addition and subtraction on this element. It is clear that you can generate every single integer using just the number 1!(the integer '1009' is just adding 1 to itself 1008 times)</p>
+    <h3>How it all works:</h3>
 
-<p>For every positive integer n, the set of integers mod(n) under the operation 'addition' forms a cyclic group!</p>
+    <p>
+      Bitcoin addresses are generated using Elliptic curve cryptography. The below step by step may not be clear at first, but in the following discussion I will explain it all!
+    </p>
 
-<p> I swear, they do. Think of the hours on a clock. Adding the hours together using clock addition will always result as another hour on the clock. It doesn't matter how/the order you perform clock addition, you will still get the same result. 0 (12 oclock) is the identity. And, starting with 1, you can generate all the other hours!
-</p>
+    <h3>Step by step:</h3>
 
-<strong>Even more importantly for our later discussion, the set of NONZERO integers mod(p), where p is a prime number greater than 2, form a cyclic subgroup under the operation 'multiplication'.</strong>
+    <ol>
+      <li>For the bitcoin protocall, the elliptic curve of the equation y^2 = x^3 + 7 mod(p) is defined over the natural numbers 1 to p where p= 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1.</li>
 
-<p>Take for example the set of NONZERO integers mod5. 2 is a generator. Observe:</p>
-<ul>
-<li>2==2mod5</li>
-<li>2^2==4mod5</li>
-<li>2^3==8mod5==3mod5</li>
-<li>2^4==16mod5==1mod5</li>
-</ul>
+      <li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
 
-<h3>(3) Discrete logs are annoying</h3>
+      <li>A private key is chosen. This is a random 256 bit number.</li>
 
-<p>So, now that you've had a crash course in modular arithmetic/algebrah, we will discuss the discrete logarithm problem. It is defined as such:</p>
-<ul> We are told that B = a^x mod p. Given B, a, and p, lets solve for x!</ul>
+      <li>Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in a public key.</li>
+    </ol>
 
-<p>At first glance, this might not seem like that big of a deal. Lets take the example, 3 = 4^x mod 11 and try to solve for x. After a few moments and some mental math, you may be able to work out that x = 4. (4^4 = 264 = 3 mod 11.) Nice job! However, what if we wanted to solve something like 3 = 4^x mod 113? This is not something we'd want to do in our head, we would much prefer to use a computer!
-</p>
-<p>
-Using these small numbers, a computer could easily brute force through powers of 4 until it reached the solution. But, smart human beings have found that if the numbers we are using for 'x', 'p', and 'a' are very large (100 digits long), brute force is no longer an option. In fact, there is no efficient computer algorithm for solving for x!
-</p>
+    <p>
+      Because of the nature of this setup, computing this multiplication is very easy. However, deriving the private key based on the result of the multiplication is very difficult. This problem is called 'the elliptic curve discrete 'logarithm problem', and it is difficulty of this problem which keeps your bitcoins secure!
+    </p>
 
-<p></p>
+    <p>
+      To gain a basic understanding of elliptic curve cryptography and why it works, I will work through a few topics. These will be in the following order:
+    </p>
 
-<p>Now we know that if B = a^x mod p, and we are given B, a, and p, it is extremely difficult to solve for x. Now, lets say we wanted to construct some sort of cryptogrpahic system out of this, how would that be structured? Well, imagine that everybody in the world uses the same 'a' and 'p'. If a person were to choose a number 'x' and compute a^x = B, he could share B with the world, and be comfortable with the fact that nobody would be able to figure out x! </p>
+    <ul>
+      <li>(1) - Modular Arithmetic</li>
+      <li>(1) - Abstract Algebrah</li>
+      <li>(2) - The Discrete Logarithm Problem</li>
+      <li>(3) - What is an elliptic curve?</li>
+      <li>(4) - What is elliptic curve addition and multiplication?</li>
+      <li>(5) - Why is elliptic curve multiplication equivalent to the discreet log problem?</li>
+      <li>(6) - How to generate public/private keys</li>
+      <li>(7) - Extended Euclidean Algorithm</li>
+      <li>(8) - Choosing a private key</li>
+    </ul>
 
-<p>In Bitcoin address terms, x would be the private key we are choosing, and B would be the public key. Now, because it is impossible to find x (the private key) even while knowing B (the public key), we can share B (the public key) with the world. In order order to prove we have ownership of the public key, we now just need to prove that we know x (the private key). NEED TO EXPLAIN AT LEAST ONE PROTOCALL USING DISCRETE LOGARITHM'S TO MAKE THE COMPARISON COMPLETE. </p>
+    <h3>(1) In the beginning, there was modular arithmetic.</h3>
 
-<p>At this point, you're probably thinking: "wait, i thought bitcoins used Elliptic Curve cryptography to create secure addresses, what is all of this discrete log mumbo jumbo???" And you'd be right to think that. Bitcoins are not created using discrete logs. It turns out that Ellitpic curve multiplication mod p creates a similar problem to the Discrete Log problem, called the Elliptic Curve Discrete Log problem. These problems are equivalent, that is, solving the Elliptic Curve Discrete logarithm problem is the same as solving the Discrete Logarithm problem, and is just as difficult! I'll explain... </p>
+    <p>
+      (via wikipedia) - In mathematics, modular arithmetic is a system of arithmetic for integers (NOTE THIS!!!), where numbers "wrap around" upon reaching a certain value — the modulus.
+    </p>
 
-<h3>(4) Are elliptic curves similar to giraffes? </h3>
+    <p>
+      For a positive integer n, two integers a and b are said to be congruent modulo n, written:
+    </p>
 
-<p>At first glance, elliptic curves and giraffes don't have a lot in common. But, if you look closer, you'll notice that in fact they don't have a lot in common, and that your first impression was accurate. For example, giraffes can eat leaves and they can run and they can poop; elliptic curves can't even do one of those things! C'mon elliptic curves, get your head in the game.</p>
+    <p>
+      a == b mod(n) if their difference a − b is an integer multiple of n (or n divides a − b). The number n is called the modulus of the congruence. wut?
+    </p>
 
-<h4>But if they're not comparable to giraffes, what could elliptic curves possibly be?</h4>
+    <p>
+      n divides (a-b): so for example, 29 =  7  mod 11. This is because 29-7 = 22, and 11 divides into 22 evenly! Another way to think about it is: if a==b mod n, then when you divide b by n, the remainder will be a. For example, 2 = 5 mod 3. It is possible to divide 3 into 5 once, and there is 2 leftover!
+    </p>
 
-<strong>SHOW ELLIPTIC CURVE PICS HERE</strong>
+    <p>
+      Another common way to think about modular arithmetic is thinking about a clock. Say it is 7 oclock. If you add 8 hours to 7 oclock, you will get 15 oclock, which is equal to 3 oclock! In modular arithmetic, define 12am/pm = 0, and we are adding mod 12. So 15 mod 12 == 3. The group of integers mod 12 is = (0,1,2,3,4,5,6,7,8,9,10,11). 12 is not written, since 0 = 12 mod 12!
+    </p>
 
-<p>An elliptic curve can be written as a plane algebraic curve defined by an equation of the form: y^2 = x^3 + ax +b. Elliptic curves are smooth, which means basically means the curve has no singular points, e.g. no cusps, intersections, or isolated points. (show pictures here).
+    <p>
+      Multiplication works exactly as you would expect. 8*3 mod 5 = 8+8+8 mod 5 = 24 mod 5 = 4. In contrast, modular division is not always intuitive. ###provide discussion if necessary later on###
+    </p>
 
-<p> The curve on which bitcoin relies (named Secp256k1) has the equation y^2 = x^3 +7. While the curve used for bitcoin security is actually defined over a finite amount of points, it is easier to see when it is defined over all real numbers. This graph which can be seen below.</p>
+    <h3>(2) - A little bit of Algebrah</h3>
 
-<p>In actuality, Secp256k1 is only defined over a finite field, so a picture of it look more like a bunch of dots than a smooth line. This field is defined as the integers between 0 and p, p = 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1 (remember seeing number this above?) where the operation performed on these numbers is modular arithmetic. If you want a more concrete description of a FINITE Field, learn some Abstract Algebra! Otherwise, we will move on</p>
+    <p>
+      It will be useful to define a Group, and in particular, a cyclic group. A group is a set of elements together with an operation that combines any two of its elements to form a third element. A group must satisfy four basic rules:
+    </p>
 
-<strong>okay, I really need to explain 'abelian' or else a lot is going to be missed. Also explain that elliptic fields are defined at infinity for addition</strong>
+    <ol>
+      <li>
+        Closure - Performing the operation on any two elements in the set will never produce a number outside the set. For example, the set of integers under the operation 'addition' satisfy this condition because you can never add two integers together to get something other than an integer. In contrast, the set of integers under the operation 'division' do not satisfy this condtion. This is because, you the result of division of two integers is not always an integer: 5/3 is not an integer, and neither is 1/2.
+      </li>
+
+      <li>
+        Associativity - when you have an expression which contains multiple occurences of the same operation (something like 1+2+3+4+5) then the order that you perform the operations does not matter. For example, (1+2)+(3+4)+5 = 15 = 1+(2+3)+(4+5). Without changing the order of the numbers, we could shift the parthenses and there was no change to the result.
+      </li>
+
+      <li>
+        Identity - The set must contain an 'identity element' which, if combined with another element of the set using the defined operation, will return that other element. 0 is the identity element under addition (1 + 0 = 1); 1 is the identity under multiplication (9 x 1 = 9)
+      </li>
+
+      <li>
+        Invertibility - For every element in the set, there exists a unique 'inverse' element which, when combined under the operation, will result in the identity element. For example, in the set of integers under addition, an elements inverse is just the negative value of that element (1+ -1 = 0)
+      </li>
+    </ol>
 
 
+    <p>
+      A cyclic group is just a group where all of the elements in the set are the result of one element (we'll call this a generator) on itself. For example, say you have the number 1, and you allow yourself to perform addition and subtraction on this element. It is clear that you can generate every single integer using just the number 1!(the integer '1009' is just adding 1 to itself 1008 times)
+    </p>
 
+    <p>
+      For every positive integer n, the set of integers mod(n) under the operation 'addition' forms a cyclic group!
+    </p>
 
+    <p>
+      I swear, they do. Think of the hours on a clock. Adding the hours together using clock addition will always result as another hour on the clock. It doesn't matter how/the order you perform clock addition, you will still get the same result. 0 (12 oclock) is the identity. And, starting with 1, you can generate all the other hours!
+    </p>
 
+    <strong>
+      Even more importantly for our later discussion, the set of NONZERO integers mod(p), where p is a prime number greater than 2, form a cyclic subgroup under the operation 'multiplication'.
+    </strong>
 
+    <p>
+      Take for example the set of NONZERO integers mod5. 2 is a generator. Observe:
+    </p>
 
+    <ul>
+      <li>2==2mod5</li>
+      <li>2^2==4mod5</li>
+      <li>2^3==8mod5==3mod5</li>
+      <li>2^4==16mod5==1mod5</li>
+    </ul>
 
+    <h3>
+      (3) Discrete logs are annoying
+    </h3>
 
+    <p>
+      So, now that you've had a crash course in modular arithmetic/algebrah, we will discuss the discrete logarithm problem. It is defined as such:
+    </p>
+    <ul>
+      We are told that B = a^x mod p. Given B, a, and p, lets solve for x!
+    </ul>
 
+    <p>
+      At first glance, this might not seem like that big of a deal. Lets take the example, 3 = 4^x mod 11 and try to solve for x. After a few moments and some mental math, you may be able to work out that x = 4. (4^4 = 264 = 3 mod 11.) Nice job! However, what if we wanted to solve something like 3 = 4^x mod 113? This is not something we'd want to do in our head, we would much prefer to use a computer!
+    </p>
 
+    <p>
+      Using these small numbers, a computer could easily brute force through powers of 4 until it reached the solution. But, smart human beings have found that if the numbers we are using for 'x', 'p', and 'a' are very large (100 digits long), brute force is no longer an option. In fact, there is no efficient computer algorithm for solving for x!
+    </p>
 
+    <p>
+      Now we know that if B = a^x mod p, and we are given B, a, and p, it is extremely difficult to solve for x. Now, lets say we wanted to construct some sort of cryptogrpahic system out of this, how would that be structured? Well, imagine that everybody in the world uses the same 'a' and 'p'. If a person were to choose a number 'x' and compute a^x = B, he could share B with the world, and be comfortable with the fact that nobody would be able to figure out x!
+    </p>
 
-</body>
+    <p>
+      In Bitcoin address terms, x would be the private key we are choosing, and B would be the public key. Now, because it is impossible to find x (the private key) even while knowing B (the public key), we can share B (the public key) with the world. In order order to prove we have ownership of the public key, we now just need to prove that we know x (the private key). NEED TO EXPLAIN AT LEAST ONE PROTOCALL USING DISCRETE LOGARITHM'S TO MAKE THE COMPARISON COMPLETE.
+    </p>
+
+    <p>
+      At this point, you're probably thinking: "wait, i thought bitcoins used Elliptic Curve cryptography to create secure addresses, what is all of this discrete log mumbo jumbo???" And you'd be right to think that. Bitcoins are not created using discrete logs. It turns out that Ellitpic curve multiplication mod p creates a similar problem to the Discrete Log problem, called the Elliptic Curve Discrete Log problem. These problems are equivalent, that is, solving the Elliptic Curve Discrete logarithm problem is the same as solving the Discrete Logarithm problem, and is just as difficult! I'll explain...
+    </p>
+
+    <h3>
+      (4) Are elliptic curves similar to giraffes?
+    </h3>
+
+    <p>
+      At first glance, elliptic curves and giraffes don't have a lot in common. But, if you look closer, you'll notice that in fact they don't have a lot in common, and that your first impression was accurate. For example, giraffes can eat leaves and they can run and they can poop; elliptic curves can't even do one of those things! C'mon elliptic curves, get your head in the game.
+    </p>
+
+    <h4>
+      But if they're not comparable to giraffes, what could elliptic curves possibly be?
+    </h4>
+
+    <strong>SHOW ELLIPTIC CURVE PICS HERE</strong>
+
+    <p>
+      An elliptic curve can be written as a plane algebraic curve defined by an equation of the form: y^2 = x^3 + ax +b. Elliptic curves are smooth, which means basically means the curve has no singular points, e.g. no cusps, intersections, or isolated points. (show pictures here).
+    </p>
+
+    <p>
+      The curve on which bitcoin relies (named Secp256k1) has the equation y^2 = x^3 +7. While the curve used for bitcoin security is actually defined over a finite amount of points, it is easier to see when it is defined over all real numbers. This graph which can be seen below.
+    </p>
+
+    <p>
+      In actuality, Secp256k1 is only defined over a finite field, so a picture of it look more like a bunch of dots than a smooth line. This field is defined as the integers between 0 and p, p = 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1 (remember seeing number this above?) where the operation performed on these numbers is modular arithmetic. If you want a more concrete description of a FINITE Field, learn some Abstract Algebra! Otherwise, we will move on
+    </p>
+
+    <strong>
+      okay, I really need to explain 'abelian' or else a lot is going to be missed. Also explain that elliptic fields are defined at infinity for addition
+    </strong>
+
+  </body>
 
 
 

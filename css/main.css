@@ -12,6 +12,8 @@ html {
     color: #222;
     font-size: 1em;
     line-height: 1.4;
+    font-family: 'Lato', sans-serif;
+    /*font-weight: thinner;*/
 }
 
 /*
@@ -91,7 +93,7 @@ textarea {
 
 
 .content {
-    width: 550px;
+    width: 525px;
     margin: 0 auto;
 }
 

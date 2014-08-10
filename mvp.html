@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
-
+        <link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
         <script src="js/vendor/modernizr-2.8.0.min.js"></script>
@@ -18,11 +18,11 @@
 
       <h2>What we covered today</h2>
 
-      <p>
+      <h3>
         1.) What is an elliptic curve. What does it look like over the real numbers.
-
+      </h3>
       <p>
-        An elliptic curve is a curve defined by the function y<sup>2</sup> = x<sup>3</sup> + ax + b. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
+        An elliptic curve is a curve defined by the function <code>y<sup>2</sup> = x<sup>3</sup> + ax + b</code>. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
       </p>
 
       (show pics here)
@@ -37,28 +37,32 @@
 
       (show pic here)
 
-      <p>
+      <h3>
         2.) What is a prime field? What does an elliptic curve look like graphed over a prime field?
+      </h3>
+
+      <p>
+        Given a prime number p, the prime field F<sub>p</sub> consists of the set of integers from 0 to (p-1) under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from 0 to (p-1). For example, F<sub>7</sub> is the set of integers {0,1,2,3,4,5,6}.
       </p>
 
       <p>
-        Given a prime number p, the prime field Fp consists of the set of integers from 0 to (p-1) under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from 0 to (p-1). For example, F7 is the set of integers {0,1,2,3,4,5,6}.
+        The prime field F<sub>P</sub> used for key generation in the bitcoin protocol is the set of integers from 0 to (p - 1), where p = 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1 (about half yo mama's weight in kg).
       </p>
 
-      <p>
-        The prime field used for key generation in the bitcoin protocol is the set of integers from 0 to (p - 1), where p = 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1 (~1 gagillion).
-      </p>
-
-      <p>
+      <h3>
         What does it mean to plot the curve over a prime field?
-      </p>
+      </h3>
 
       <p>
         When plotting over real numbers, we solved the equation y^2 = x^3 + 7 for all real numbers. In other words, we check every x value to see if we can solve for y. We then plot these (x, y) pairs on the chart to create the continuous curve you saw above.
       </p>
 
       <p>
-        In contrast, when plotting over a prime field, we check for solutions to y^2 = x^3 + 7 only for integers in Fp. In other words, we use every x value in Fp (integers from 0 to (p-1)) and solve y^2 = x^3 + 7 for y. If y is also in Fp, then this (x, y) pair is a solution to the equation.
+        In contrast, when plotting over a prime field, we check for solutions to y^2 = x^3 + 7 modp only for integers in F<sub>p</sub>. In other words, we use every x value in F<sub>p</sub> (integers from 0 to (p-1)) and solve y^2 = x^3 + 7 modp for y. If y is also in F<sub>p</sub>, then this (x, y) pair is a solution to the equation. <b>Note: not every element in the prime field will result in a solution to the elliptic curve equation.</b>
+      </p>
+
+      <p>
+        The set of points in the prime field F<sub>p</sub> looks like this. The x and y coordinates each range from 0 to (p-1):
       </p>
 
       <p>
@@ -71,36 +75,65 @@
       </p>
 
       <p>
+        As an example, lets take the curve: y<sup>2</sup> = x<sup>3</sup> + x mod 23. Mod 23 indicates we are plotting over the prime field F<sub>23</sub> which is the set of integers from 0 to 23. Lets examine one coordinate pair in this field: (11,10)
+      </p>
+
+      <ul>
+        <li>y<sup>2</sup> = x<sup>3</sup> + x mod 23</li>
+        <li>10<sup>2</sup> = 11<sup>3</sup> + 11 mod 23</li>
+        <li>100 = 1331 + 1 mod 23</li>
+        <li>100 = 1332 mod 23</li>
+        <li>8 = 8 mod 23</li>
+        <li>because (100 % 23 == 8) and (1332 % 23 == 8) where '%' is the modulo operation</li>
+      </ul>
+
+      <p>As we have shown, the coordinate pair (11,10) from F<sub>23</sub> satisifies the elliptic curve equation. Therefore, this point would be included in the graph of our curve over F<sub>23</sub></p>
+
+      <p>
+        In contrast, lets take a different coordinate pair: (2,8)
+      </p>
+
+      <ul>
+        <li>y<sup>2</sup> = x<sup>3</sup> + x mod 23</li>
+        <li>2<sup>2</sup> = 8<sup>3</sup> + 8 mod 23</li>
+        <li>4 = 512 + 8 mod 23</li>
+        <li>4 = 520 mod 23</li>
+        <li>4 != 14 mod 23</li>
+      </ul>
+
+      <p>As we have shown, the coordinate pair (2,8) from F<sub>23</sub> does not satisify the elliptic curve equation. Therefore, this point would not be included in the graph of our curve over F<sub>23</sub></p>
+
+
+      <p>
         As you can imagine, an elliptic curve plotted over a prime field looks significantly different than an elliptic curve plotted over the real numbers. A prime field contains a finite number of elements, so instead of a continuous line, we see a scattering of dots.
       </p>
 
       <p>
-        Here is why:
+        Pictured below is an elliptic curve graphed over a prime field. You can see that for each x which yields a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
       </p>
 
-      <p>
-        The set of points in the prime field Fp looks like this. The x and y coordinates each range from 0 to (p-1):
-      </p>
+      <h3>
+        3.) How does elliptic curve addition work?
+      </h3>
 
       <p>
-        Not every element in the prime field will result in a solution to the elliptic curve equation (y^2 = x^3 + ax + b).
+        Elliptic curve addition is an operation that is defined specifically for elliptic curves. First we will describe elliptic curve addition over the real numbers, then we will describe elliptic curve addition over F<sub>p</sub>. Addition of two distinct points (A and B) on an elliptic curve can be described in the following steps:
       </p>
+      <ol>
+        <li>Connect A and B with a straight line.</li>
+        <li>This line will intersect a third place on the elliptic curve. We'll call it C. </li>
+        <li>Take C and reflect it across the y-axis.</li>
+        <li>The point resulting from reflecting C across the y-axis is the result of the addition!</li>
+      </ol>
 
-      <p>
-        Taking each one of these points and plugging them into our elliptic curve equation (y^2 = x^3 + ax + b) we see which ones will yeild solutions. Those that do will be included in the graph of the elliptic curve over the prime field.
-      </p>
+      <p>This is tough to understand, so here is an animation which gives you an idea of how this works!</p>
 
-      <p>
-        Note, for every point (x,y) that is a solution to the elliptic curve, the  corresponding point (x, -y modp) is also a solution! This is because y^2 == (-y)^2 mod p.
-      </p>
+      <p>But, what if we want to add a point to itself? To do this, it's helpful to look again at two distinct points, A and B, connected by a line. If we gradually move A and B closer and closer to each other, we see that the line connecting the two points becomes the tangent curve to a single point, the meeting point between the two points.</p>
 
-      <p>
-        Below, pictured is an elliptic curve graphed over a prime field. You can see that for each x which yeilds a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
-      </p>
+      <p>Based on this observation, we can see that to add a point A to itself, the 'line connecting two distinct points' becomes the tangent line to the point A on the elliptic curve. Then, we find the where the tangent line intersects the curve, and continue as above. See below for an animation.</p>
 
-      <p>
-        3.) How does elliptic curve addition work over a prime field?
-      </p>
+      <p>Over a prime field F<sub>p</sub> addition is done in much the same way. </p>
+
 
     </div>
   </body>
