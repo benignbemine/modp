@@ -34,22 +34,25 @@ class ECurve
 
   def ec_add point_1, point_2
     # get slope of line between both points
-    m = get_slope point_1, point_2
+    m = get_slope(point_1, point_2)
 
     # calculate addition
-    point_3
+    x_3 = (point_1.x - point_2.x) % @p
+    y_3 = (m * (point_1.x - x_3) - point_1.y) % @p
+
+    # final point
+    Point.new(x_3, y_3)
   end
 
   def ec_multiply point_1, k
 
   end
 
-
   def get_slope (point_1, point_2)
     if point_1.coord_pair == point_2.coord_pair
-      (3 * point_1.x ** 2 + @a) * inverse_mod(2 * point_1.y, @p)
+      ((3 * point_1.x ** 2 + @a) * inverse_mod(2 * point_1.y, @p)) % @p
     else
-      (point_1.y - point_2.y) * inverse_mod(point_1.x - point_2.x, @p)
+      ((point_1.y - point_2.y) * inverse_mod(point_1.x - point_2.x, @p)) % @p
     end
   end
 
@@ -60,7 +63,6 @@ class ECurve
     end
     x % et
   end
-
 
   def extended_gcd(a, b)
     last_remainder, remainder = a.abs, b.abs
@@ -82,11 +84,13 @@ end
 ec = ECurve.new(0, 7, 17)
 p ec.inverse_mod(6, 11) == 2
 
-p1 = Point.new(1, 5)
-p2 = Point.new(11, 10)
+p1 = Point.new(1, 2)
+p2 = Point.new(4, 3)
 
 p ec.get_slope(p1, p2)
 p ec.get_slope(p1, p1)
+
+p ec.ec_add(p1,p2)
 # private_key = 8
 
 # pub_key = ec_get_pub_key private_key
