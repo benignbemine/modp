@@ -1,0 +1,43 @@
+What we covered today:
+
+1.) What is an elliptic curve. What does it look like over the real numbers.
+
+An elliptic curve is a curve defined by the function y^2 = x^3 + ax + b. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
+
+(show pics here)
+
+For the Bitcoin protocall, there is one specific elliptic curves on which ALL users rely. You may have heard of it: Secp256k1. It is defined by y^2 = x^3 + 7.
+
+Here is a graph of it over the real numbers.
+
+2.) What is a prime field. What does an elliptic curve look like graphed over a prime field.
+
+A prime field Fp consists of the set of integers from 0 to (p-1) under the operations of mod-p addition and multiplication. For example, F7 is the set of integers {0,1,2,3,4,5,6} under mod7 addition and multiplication.
+
+For the bitcoin protocall, p = 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1.
+
+As you can imagine, graphing an elliptic curve over a prime field looks significantly different than over the reals. A prime field contains a finite number of elements, so instead of a continuous line, we see a scattering of dots.
+
+Also, not every element in the prime field will result in a solution to the elliptic curve equation (y^2 = x^3 + ax + b). The set of points in the prime field Fp looks like this:
+
+(0,0) (0,1) ... (0,p-1)
+(1,0) .........
+...............
+...............
+...............
+(p-1,0)........ (p-1,p-1)
+
+Taking each one of these points and plugging them into our elliptic curve equation (y^2 = x^3 + ax + b) we see which ones will yeild solutions. Those that do will be included in the graph of the elliptic curve over the prime field.
+
+Note, for every point (x,y) that is a solution to the elliptic curve, the  corresponding point (x, -y modp) is also a solution! This is because y^2 == (-y)^2 mod p.
+
+Below, pictured is an elliptic curve graphed over a prime field. You can see that for each x which yeilds a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
+
+
+
+
+3.) How does elliptic curve addition work over a prime field?
+
+
+
+
