@@ -1,57 +1,111 @@
-What we covered today:
 
-1.) What is an elliptic curve. What does it look like over the real numbers.
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
 
-An elliptic curve is a curve defined by the function y^2 = x^3 + ax + b. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
+        <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
 
-(show pics here)
+        <link rel="stylesheet" href="css/normalize.css">
+        <link rel="stylesheet" href="css/main.css">
+        <script src="js/vendor/modernizr-2.8.0.min.js"></script>
+    </head>
+  <body>
+    <div class="content">
 
-For the Bitcoin protocol, there is one specific elliptic curve on which ALL users rely. You may have heard of it: secp256k1. It is defined by the equation y^2 = x^3 + 7.
+      <h2>What we covered today</h2>
 
-Here is a graph of it over the real numbers. Note how the curve is continuous.
+      <p>
+        1.) What is an elliptic curve. What does it look like over the real numbers.
 
-(show pic here)
+      <p>
+        An elliptic curve is a curve defined by the function y<sup>2</sup> = x<sup>3</sup> + ax + b. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
+      </p>
 
-2.) What is a prime field? What does an elliptic curve look like graphed over a prime field?
+      (show pics here)
 
-Given a prime number p, the prime field Fp consists of the set of integers from 0 to (p-1) under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from 0 to (p-1). For example, F7 is the set of integers {0,1,2,3,4,5,6}.
+      <p>
+        For the Bitcoin protocol, there is one specific elliptic curve on which ALL users rely. You may have heard of it: secp256k1, a curve developed and standardized by NIST. It is defined by the equation y<sup>2</sup> = x<sup>3</sup> + 7.
+      </p>
 
-The prime field used for key generation in the bitcoin protocol is the set of integers from 0 to (p - 1), where p = 2^356 - 2^32 - 2^9 - 2^7 - 2^6 - 2^4 - 1 (~1 gagillion).
+      <p>
+        Here is a graph of it over the real numbers. Note how the curve is continuous.
+      </p>
 
-What does it mean to plot the curve over a prime field?
+      (show pic here)
 
-When plotting over real numbers, we solved the equation y^2 = x^3 + 7 for all real numbers. In other words, we check every x value to see if we can solve for y. We then plot these (x, y) pairs on the chart to create the continuous curve you saw above.
+      <p>
+        2.) What is a prime field? What does an elliptic curve look like graphed over a prime field?
+      </p>
 
-In contrast, when plotting over a prime field, we check for solutions to y^2 = x^3 + 7 only for integers in Fp. In other words, we use every x value in Fp (integers from 0 to (p-1)) and solve y^2 = x^3 + 7 for y. If y is also in Fp, then this (x, y) pair is a solution to the equation.
+      <p>
+        Given a prime number p, the prime field Fp consists of the set of integers from 0 to (p-1) under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from 0 to (p-1). For example, F7 is the set of integers {0,1,2,3,4,5,6}.
+      </p>
 
-(0,0) (0,1) ... (0,p-1)
-(1,0) .........
-...............
-...............
-...............
-(p-1,0)........ (p-1,p-1)
+      <p>
+        The prime field used for key generation in the bitcoin protocol is the set of integers from 0 to (p - 1), where p = 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1 (~1 gagillion).
+      </p>
 
-As you can imagine, an elliptic curve plotted over a prime field looks significantly different than an elliptic curve plotted over the real numbers. A prime field contains a finite number of elements, so instead of a continuous line, we see a scattering of dots.
+      <p>
+        What does it mean to plot the curve over a prime field?
+      </p>
+
+      <p>
+        When plotting over real numbers, we solved the equation y^2 = x^3 + 7 for all real numbers. In other words, we check every x value to see if we can solve for y. We then plot these (x, y) pairs on the chart to create the continuous curve you saw above.
+      </p>
+
+      <p>
+        In contrast, when plotting over a prime field, we check for solutions to y^2 = x^3 + 7 only for integers in Fp. In other words, we use every x value in Fp (integers from 0 to (p-1)) and solve y^2 = x^3 + 7 for y. If y is also in Fp, then this (x, y) pair is a solution to the equation.
+      </p>
+
+      <p>
+      (0,0) (0,1) ... (0,p-1)
+      (1,0) .........
+      ...............
+      ...............
+      ...............
+      (p-1,0)........ (p-1,p-1)
+      </p>
+
+      <p>
+      As you can imagine, an elliptic curve plotted over a prime field looks significantly different than an elliptic curve plotted over the real numbers. A prime field contains a finite number of elements, so instead of a continuous line, we see a scattering of dots.
+      </p>
+
+      <p>
+      Here is why:
+      </p>
+
+      <p>
+      The set of points in the prime field Fp looks like this. The x and y coordinates each range from 0 to (p-1):
+      </p>
+
+      <p>
+      Not every element in the prime field will result in a solution to the elliptic curve equation (y^2 = x^3 + ax + b).
+      </p>
+
+      <p>
+      Taking each one of these points and plugging them into our elliptic curve equation (y^2 = x^3 + ax + b) we see which ones will yeild solutions. Those that do will be included in the graph of the elliptic curve over the prime field.
+      </p>
+
+      <p>
+      Note, for every point (x,y) that is a solution to the elliptic curve, the  corresponding point (x, -y modp) is also a solution! This is because y^2 == (-y)^2 mod p.
+      </p>
+
+      <p>
+      Below, pictured is an elliptic curve graphed over a prime field. You can see that for each x which yeilds a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
+      </p>
+
+      <p>
+      3.) How does elliptic curve addition work over a prime field?
+      </p>
 
 
-Here is why:
 
-The set of points in the prime field Fp looks like this. The x and y coordinates each range from 0 to (p-1):
-
-
-Not every element in the prime field will result in a solution to the elliptic curve equation (y^2 = x^3 + ax + b).
-
-Taking each one of these points and plugging them into our elliptic curve equation (y^2 = x^3 + ax + b) we see which ones will yeild solutions. Those that do will be included in the graph of the elliptic curve over the prime field.
-
-Note, for every point (x,y) that is a solution to the elliptic curve, the  corresponding point (x, -y modp) is also a solution! This is because y^2 == (-y)^2 mod p.
-
-Below, pictured is an elliptic curve graphed over a prime field. You can see that for each x which yeilds a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
-
-
-
-
-3.) How does elliptic curve addition work over a prime field?
-
-
-
+    </div>
+  </body>
+</html>
 
