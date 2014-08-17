@@ -29,10 +29,9 @@ class ECurve
   def pub_key(k)
   end
 
-  @infinity = Point.new(0,0)
-
-
   # private
+
+  @infinity = Point.new(0,0)
 
   def ec_add point_1, point_2
     # get slope of line between both points
