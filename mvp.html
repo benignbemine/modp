@@ -8,9 +8,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <!-- Place favicon.ico and apple-touch-icon(s) in the root directory -->
-        <link href='http://fonts.googleapis.com/css?family=Lato:300' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Lato:300,700,700italic' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="css/normalize.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="shortcut icon" href="images/favicon.ico"/>
         <script src="js/vendor/modernizr-2.8.0.min.js"></script>
     </head>
   <body>
@@ -22,13 +23,13 @@
         1.) What is an elliptic curve. What does it look like over the real numbers.
       </h3>
       <p>
-        An elliptic curve is a curve defined by the function <code>y<sup>2</sup> = x<sup>3</sup> + ax + b</code>. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
+        An elliptic curve is a curve defined by the function <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span>. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
       </p>
 
       (show pics here)
 
       <p>
-        For the Bitcoin protocol, there is one specific elliptic curve on which ALL users rely. You may have heard of it: secp256k1, a curve developed and standardized by NIST. It is defined by the equation y<sup>2</sup> = x<sup>3</sup> + 7.
+        For the Bitcoin protocol, there is one specific elliptic curve on which ALL users rely. You may have heard of it: <a href="https://en.bitcoin.it/wiki/Secp256k1" target="_blank">secp256k1</a>, a curve developed and standardized by NIST. It is defined by the equation <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span>.
       </p>
 
       <p>
@@ -42,11 +43,11 @@
       </h3>
 
       <p>
-        Given a prime number p, the prime field F<sub>p</sub> consists of the set of integers from 0 to (p-1) under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from 0 to (p-1). For example, F<sub>7</sub> is the set of integers {0,1,2,3,4,5,6}.
+        Given a prime number <span class="math">p</span>, the prime field <span class="math">F<sub>p</sub></span> consists of the set of integers from <span class="math">0 to (p-1)</span> under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from <span class="math">0 to (p-1)</span>. For example, <span class="math">F<sub>7</sub></span> is the set of integers <span class="math">{0,1,2,3,4,5,6}</span>.
       </p>
 
       <p>
-        The prime field F<sub>P</sub> used for key generation in the bitcoin protocol is the set of integers from 0 to (p - 1), where p = 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1 (about half yo mama's weight in kg).
+        The prime field <span class="math">F<sub>p</sub></span> used for key generation in the bitcoin protocol is the set of integers from 0 to <span class="math">(p - 1)</span>, where <span class="math">p = 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</span> (about half yo mama's weight in kg).
       </p>
 
       <h3>
@@ -54,28 +55,27 @@
       </h3>
 
       <p>
-        When plotting over real numbers, we solved the equation y^2 = x^3 + 7 for all real numbers. In other words, we check every x value to see if we can solve for y. We then plot these (x, y) pairs on the chart to create the continuous curve you saw above.
+        When plotting over real numbers, we solved the equation <span class="math">y^2 = x^3 + 7</span> for all real numbers. In other words, we check every x value to see if we can solve for y. We then plot these (x, y) pairs on the chart to create the continuous curve you saw above.
       </p>
 
       <p>
-        In contrast, when plotting over a prime field, we check for solutions to y^2 = x^3 + 7 modp only for integers in F<sub>p</sub>. In other words, we use every x value in F<sub>p</sub> (integers from 0 to (p-1)) and solve y^2 = x^3 + 7 modp for y. If y is also in F<sub>p</sub>, then this (x, y) pair is a solution to the equation. <b>Note: not every element in the prime field will result in a solution to the elliptic curve equation.</b>
+        In contrast, when plotting over a prime field, we check for solutions to <span class="math">y^2 = x^3 + 7 <em> mod</em> p</span> only for integers in <span class="math">F<sub>p</sub></span>. In other words, we use every x value in <span class="math">F<sub>p</sub></span> (integers from 0 to (p-1)) and solve <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7<em> mod</em> p</span> for y. If y is also in <span class="math">F<sub>p</sub></span>, then this (x, y) pair is a solution to the equation. <em>Note: not every element in the prime field will result in a solution to the elliptic curve equation.</em>
       </p>
 
       <p>
-        The set of points in the prime field F<sub>p</sub> looks like this. The x and y coordinates each range from 0 to (p-1):
+        The set of points in the prime field <span class="math">F<sub>p</sub></span> looks like this. The x and y coordinates each range from <span class="math">0 to (p-1)</span>:
       </p>
 
       <p>
-        (0,0) (0,1) ... (0,p-1)
-        (1,0) .........
-        ...............
-        ...............
-        ...............
-        (p-1,0)........ (p-1,p-1)
+        (0,0) (0,1) ... (0,p-1)<br>
+        (1,0) ...........................<br>
+        .......................................<br>
+        .......................................<br>
+        (p-1,0)........ (p-1,p-1)<br>
       </p>
 
       <p>
-        As an example, lets take the curve: y<sup>2</sup> = x<sup>3</sup> + x mod 23. Mod 23 indicates we are plotting over the prime field F<sub>23</sub> which is the set of integers from 0 to 23. Lets examine one coordinate pair in this field: (11,10)
+        As an example, lets take the curve: <span class="math">y<sup>2</sup> = x<sup>3</sup> + x <em> mod</em> 23</span>. <span class="math"><em> mod</em> 23</span> indicates we are plotting over the prime field F<sub>23</sub> which is the set of integers from 0 to 23. Lets examine one coordinate pair in this field: (11,10)
       </p>
 
       <ul>
@@ -117,7 +117,7 @@
       </h3>
 
       <p>
-        Elliptic curve addition is an operation that is defined specifically for elliptic curves. First we will describe elliptic curve addition over the real numbers, then we will describe elliptic curve addition over F<sub>p</sub>. Addition of two distinct points (A and B) on an elliptic curve can be described in the following steps:
+        Elliptic curve addition is an operation that is defined specifically for elliptic curves. First we will describe elliptic curve addition over the real numbers, then we will describe elliptic curve addition over <span class="math">F<sub>p</sub></span>. Addition of two distinct points (A and B) on an elliptic curve can be described in the following steps:
       </p>
       <ol>
         <li>Connect A and B with a straight line.</li>
@@ -132,7 +132,7 @@
 
       <p>Based on this observation, we can see that to add a point A to itself, the 'line connecting two distinct points' becomes the tangent line to the point A on the elliptic curve. Then, we find the where the tangent line intersects the curve, and continue as above. See below for an animation.</p>
 
-      <p>Over a prime field F<sub>p</sub> addition is done in much the same way. </p>
+      <p>Over a prime field <span class="math">F<sub>p</sub></span> addition is done in much the same way. </p>
 
 
     </div>
