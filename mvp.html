@@ -17,10 +17,10 @@
   <body>
     <div class="content">
 
-      <h2>What we covered today</h2>
+      <h2>Bitcoin Address Generation using Elliptic Curve Cryptography</h2>
 
       <h3>
-        1.) What is an elliptic curve. What does it look like over the real numbers.
+        1.) What is an elliptic curve? What does it look like over the real numbers?
       </h3>
       <p>
         An elliptic curve is a curve defined by the function <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span>. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
@@ -43,7 +43,7 @@
       </h3>
 
       <p>
-        Given a prime number <span class="math">p</span>, the prime field <span class="math">F<sub>p</sub></span> consists of the set of integers from <span class="math">0 to (p-1)</span> under the operations of mod-p addition and multiplication. For our purposes just think of this as the set of integers from <span class="math">0 to (p-1)</span>. For example, <span class="math">F<sub>7</sub></span> is the set of integers <span class="math">{0,1,2,3,4,5,6}</span>.
+        Given a prime number <span class="math">p</span>, the prime field <span class="math">F<sub>p</sub></span> consists of the set of integers from <span class="math">0 to (p-1)</span> under the operations of mod-p addition and multiplication. For our purposes, just think of this as the set of integers from <span class="math">0 to (p-1)</span>. For example, <span class="math">F<sub>7</sub></span> is the set of integers <span class="math">{0,1,2,3,4,5,6}</span>.
       </p>
 
       <p>
@@ -75,7 +75,7 @@
       </p>
 
       <p>
-        As an example, lets take the curve: <span class="math">y<sup>2</sup> = x<sup>3</sup> + x <em> mod</em> 23</span>. <span class="math"><em> mod</em> 23</span> indicates we are plotting over the prime field F<sub>23</sub> which is the set of integers from 0 to 23. Lets examine one coordinate pair in this field: (11,10)
+        As an example, lets take the curve: <span class="math">y<sup>2</sup> = x<sup>3</sup> + x <em> mod</em> 23</span>. <span class="math"><em> mod</em> 23</span> indicates we are plotting over the prime field F<sub>23</sub> which is the set of integers from 0 to 22. Lets examine one coordinate pair in this field: (11,10)
       </p>
 
       <ul>
@@ -132,7 +132,44 @@
 
       <p>Based on this observation, we can see that to add a point A to itself, the 'line connecting two distinct points' becomes the tangent line to the point A on the elliptic curve. Then, we find the where the tangent line intersects the curve, and continue as above. See below for an animation.</p>
 
+      <p>Here it is also important to mention that added to the field Fp is a "point at infinity". This point is reached when adding two points (P and Q) together which have the same x coordinate but different y coordinates. See below:</p>
+
+      <p>This point acts as the identity of the group. P + Q = &infin and P + &infin = P.</p>
+
       <p>Over a prime field <span class="math">F<sub>p</sub></span> addition is done in much the same way. </p>
+
+      <h3>
+        4.) Elliptic Curve Addition over a prime field.
+      </h3>
+
+      <p>First, it is good to remember exactly what a prime field is. A prime field F<sub>p</sub> consists of the integers from 0 to (p-1). So, the graph of an elliptic curve over a prime field is a FINITE number of points, in contrast with a graph over the real numbers which contains an infinite number of points. </p>
+
+      <p>To perform elliptic curve addition over a prime field, we can follow the same steps as outlined above. However, a few concepts may not intuitively translate from reals to prime fields: what is the slope? When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? </p>
+
+      <p>Question one: why do we take the slope mod p? Well, what is a slope? Slope is just the change in y given a change in x. We increase x by some amount, how much do we need to add/subtract from y to have an (x,y) coordinate which satisfies our equation? Because addition is mod p, if we increase x the most which y will change is (p-1)! This is because in modp, adding anything >=p is equivalent to adding some integer between 0 and (p-1).</p>
+
+      <p> Question two: When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? Remember, not every (x,y) pair on the prime field will be a solution to the equation <br> <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span><strong>I can't figure this out right now....</strong></p>
+
+      <h3>Let's do it!</h3>
+      <p>Given points P(p<sub>x</sub>, p<sub>y</sub>), Q(q<sub>x</sub>, q<sub>y</sub>), and R(r<sub>x</sub>, r<sub>y</sub>), the steps for the elliptic curve addition of P + Q = R on the curve <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b mod p</span> are as follows:</p>
+      <ol>
+
+      <li>To get the slope, there are two scenarios.</li>
+
+        <ol>
+         <li>1. If the P != Q,  we compute <span class="math">s = (q<sub>y</sub> - p<sub>y</sub>)/(q<sub>x</sub> - p<sub>x</sub>) mod p</span></li>
+         <li>If P = Q, we compute the slope of the tangent by taking taking the derivative of the elliptic curve equation at (p<sub>x</sub>, p<sub>y</sub>) and solving for dy/dx. So,<span class="math">s = (3p<sub>x</sub><sup>2</sup> + b)/(2p<sub>y</sub>) mod p</span></li>
+        </ol>
+
+      <li>To get the coordinates of R, we now compute:</li>
+        <ol>
+          <li><span class="math">r<sub>x</sub> = s<sup>2</sup> - p<sub>x</sub> - p<sub>y</sub> mod p</span></li>
+          <li><span class="math">r<sub>y</sub> = s * (p<sub>x</sub> - r<sub>x</sub>) - q<sub>y</sub> mod p</span></li>
+        </ol>
+
+      </ol>
+
+
 
 
     </div>
