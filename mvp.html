@@ -19,6 +19,32 @@
 
       <h2>Bitcoin Address Generation using Elliptic Curve Cryptography</h2>
 
+      <h3>How it all works:</h3>
+
+      <p>
+        Bitcoin addresses are generated using Elliptic Curve Cryptography. The steps below may not be clear at first, but in the following discussion they will be explained!
+      </p>
+
+      <h3>Step by step:</h3>
+
+      <ol>
+        <li>For the bitcoin protocall, the elliptic curve of the equation <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span> is defined over the integers 0 to p where <span class="math">p= 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</span>.</li>
+
+        <li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
+
+        <li>A private key is chosen. This is a random 256 bit number.</li>
+
+        <li>Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in another point on the elliptic curve, which is the public key.</li>
+      </ol>
+
+      <p>
+        Because of the nature of this setup, computing this multiplication is very easy. However, deriving the private key based on the result of the multiplication is very difficult. This problem is called 'the elliptic curve discrete 'logarithm problem', and it is difficulty of this problem which keeps your bitcoins secure!
+      </p>
+
+      <p>
+        To gain a basic understanding of elliptic curve cryptography and why it works, I will work through a few topics. These will be in the following order:
+      </p>
+
       <h3>
         1.) What is an elliptic curve? What does it look like over the real numbers?
       </h3>
@@ -123,10 +149,10 @@
         <li>Connect A and B with a straight line.</li>
         <li>This line will intersect a third place on the elliptic curve. We'll call it C. </li>
         <li>Take C and reflect it across the y-axis.</li>
-        <li>The point resulting from reflecting C across the y-axis is the result of the addition!</li>
+        <li>The <strong>point</strong> resulting from reflecting C across the y-axis is the result of the addition!</li>
       </ol>
 
-      <p>This is tough to understand, so here is an animation which gives you an idea of how this works!</p>
+      <p>I want to reiterate this: <strong>the result of elliptic curve addition is another point on the curve.</strong> This can all be tough to understand, so here is an animation which gives you an idea of how this works!</p>
 
       <p>But, what if we want to add a point to itself? To do this, it's helpful to look again at two distinct points, A and B, connected by a line. If we gradually move A and B closer and closer to each other, we see that the line connecting the two points becomes the tangent curve to a single point, the meeting point between the two points.</p>
 
@@ -134,7 +160,7 @@
 
       <p>Here it is also important to mention that added to the field Fp is a "point at infinity". This point is reached when adding two points (P and Q) together which have the same x coordinate but different y coordinates. See below:</p>
 
-      <p>This point acts as the identity of the group. P + Q = &infin and P + &infin = P.</p>
+      <p>This point acts as the identity for Elliptic Curve addition. That is, P + Q = &infin and P + &infin = P.</p>
 
       <p>Over a prime field <span class="math">F<sub>p</sub></span> addition is done in much the same way. </p>
 
@@ -144,13 +170,13 @@
 
       <p>First, it is good to remember exactly what a prime field is. A prime field F<sub>p</sub> consists of the integers from 0 to (p-1). So, the graph of an elliptic curve over a prime field is a FINITE number of points, in contrast with a graph over the real numbers which contains an infinite number of points. </p>
 
-      <p>To perform elliptic curve addition over a prime field, we can follow the same steps as outlined above. However, a few concepts may not intuitively translate from reals to prime fields: what is the slope? When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? </p>
+      <p>To perform elliptic curve addition over a prime field, we can follow the same steps as outlined above. However, a few concepts may not intuitively translate from reals to prime fields: do we take the slope mod p? When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? </p>
 
-      <p>Question one: why do we take the slope mod p? Well, what is a slope? Slope is just the change in y given a change in x. We increase x by some amount, how much do we need to add/subtract from y to have an (x,y) coordinate which satisfies our equation? Because addition is mod p, if we increase x the most which y will change is (p-1)! This is because in modp, adding anything >=p is equivalent to adding some integer between 0 and (p-1).</p>
+      <p>Question one: do we take the slope mod p? Well, what is a slope? Slope is just the change in y given a change in x of 1. We increase x by some amount, how much do we need to add/subtract from y to have an (x,y) coordinate which satisfies our equation? Because addition is mod p, if we increase x the most which y will change is (p-1). This is because in modp, adding anything >=p is equivalent to adding some integer between 0 and (p-1).</p>
 
       <p> Question two: When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? Remember, not every (x,y) pair on the prime field will be a solution to the equation <br> <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span><strong>I can't figure this out right now....</strong></p>
 
-      <h3>Let's do it!</h3>
+      <h3>Equations!</h3>
       <p>Given points P(p<sub>x</sub>, p<sub>y</sub>), Q(q<sub>x</sub>, q<sub>y</sub>), and R(r<sub>x</sub>, r<sub>y</sub>), the steps for the elliptic curve addition of P + Q = R on the curve <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b mod p</span> are as follows:</p>
       <ol>
 
@@ -191,7 +217,7 @@
         </li>
 
         <li>
-          <p>r<sub>y</sub> : Now, we can plug r<sub>x</sub> into the point slope form of the equation for the line through P and Q: </p>
+          <p>r<sub>y</sub> : Now, we can plug r<sub>x</sub> for x into the point slope form of the equation for the line through P and Q: </p>
           <p><span class="math">
             y - p<sub>y</sub> = s(x - p<sub>x</sub>)
             <br>
@@ -202,7 +228,34 @@
         </li>
       </ol>
 
+      <h3>5. Elliptic Curve Multipation, Private Keys, and Public Keys</h3>
 
+      <p>Elliptic Curve Multiplication is defined exactly how you would expect. That is, for a point P being multiplied k times: </p>
+
+      <p><span class="math">k * P = P + P + P + P....(k times) modp</span></p>
+
+      <p>Do you remember our steps from the beginning? I will restate them below: </p>
+
+      <ol>
+        <li>For the bitcoin protocol, the elliptic curve of the equation <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span> is defined over the prime field F<sub>p</sub> where <span class="math">p= 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</span>.</li>
+
+        <li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
+
+        <li>A private key is chosen. This is a random 256 bit number.</li>
+
+        <li>Using Elliptic Curve Multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in another point on the elliptic curve, which is the public key.</li>
+      </ol>
+
+      <p>One quick note: the starting point A is point which is the same for ALL bitcoin client users. This point: <span class="math">(55066263022277343669578718895168534326250603453777594175500187360389116729240, 32670510020758816978083085130507043184471273380659243275938904335757337482424)</span> was chosen because it is a 'generator' of the group formed under Elliptic Curve Multiplication mod p. That is a bit of abstract algebra for ya, which we learn about in a different post. It is a sufficient to say that by performing elliptic curve multiplications on the point A, it is possible for the result to be every single point on the prime field for which the curve is defined.</p>
+
+      <p>Looking at the steps above, it seems pretty simple to calculate a public key. In fact, almost too simple - wasn't this supposed to be cryptographically secure?</p>
+
+      <p>Well, it turns out the Elliptic Curve Multiplication is really, really, really hard to reverse. That is given X, p, and a starting point A, where: <span class="math"> X = k*A mod p</span> it is virutally impossible to find k in a reasonable amount of time.</p>
+
+
+
+
+      <h3>6. Getting to the point...</h3>
     </div>
   </body>
 </html>
