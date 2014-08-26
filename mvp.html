@@ -164,12 +164,43 @@
       <li>To get the coordinates of R, we now compute:</li>
         <ol>
           <li><span class="math">r<sub>x</sub> = s<sup>2</sup> - p<sub>x</sub> - p<sub>y</sub> mod p</span></li>
-          <li><span class="math">r<sub>y</sub> = s * (p<sub>x</sub> - r<sub>x</sub>) - q<sub>y</sub> mod p</span></li>
+
+          <li><span class="math">r<sub>y</sub> = s * (p<sub>x</sub> - r<sub>x</sub>) - p<sub>y</sub> mod p</span></li>
         </ol>
 
       </ol>
 
+      <p>Some simple algebra will verify the coordinate equations above:</p>
+      <ol>
+        <li>
+          <p>r<sub>x</sub> : We want to find the x value at the point of intersection between the equation of the elliptic curve <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span> and the line <span class="math">y = sx + k</span>(the line defined by point P and the calculated slope 's').</p>
 
+          <p>
+          We set the equations equal to each other, and solve for 0. From there, we know that this 3rd order polynomial equation has three zero's (the three points of intersection on the graph), two of which are p<sub>x</sub> and q<sub>x</sub>. We must now solve for the last zero r<sub>x</sub> by setting the equation equal to the factored form of the equation.
+          </p>
+
+          <p><span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span> and  <span class="math">y = sx + k</span></p>
+
+          <p><span class="math">y<sup>2</sup> = (sx + k)<sup>2</sup> = x<sup>3</sup> + ax + b</span></p>
+
+          <p><span class="math"> 0 = x<sup>3</sup> + ax + b - (sx + k)<sup>2</sup> = (x - p<sub>x</sub>)(x - q<sub>x</sub>)(x - r<sub>x</sub>)</span></p>
+
+          <p>Multiplying out the each side, we know that the coefficents to x<sup>2</sup> should be equal. On the left side, the coefficient is -s<sup>2</sup>, and on the right the coefficient -(p<sub>x</sub> + q<sub>x</sub> + r<sub>x</sub>). Setting these two equal and solving for r<sub>x</sub> : </p>
+
+          <p><span class="math">r<sub>x</sub> = s<sup>2</sup> - p<sub>x</sub> - q<sub>x</sub></span></p>
+        </li>
+
+        <li>
+          <p>r<sub>y</sub> : Now, we can plug r<sub>x</sub> into the point slope form of the equation for the line through P and Q: </p>
+          <p><span class="math">
+            y - p<sub>y</sub> = s(x - p<sub>x</sub>)
+            <br>
+            r<sub>y</sub> = s(r<sub>x</sub> - p<sub>x</sub>) + p<sub>y</sub>
+
+          </span></p>
+
+        </li>
+      </ol>
 
 
     </div>
