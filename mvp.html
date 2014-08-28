@@ -13,8 +13,15 @@
         <link rel="stylesheet" href="css/main.css">
         <link rel="shortcut icon" href="images/favicon.ico"/>
         <script src="js/vendor/modernizr-2.8.0.min.js"></script>
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({
+            "HTML-CSS": {availableFonts: "Asana Math"}
+          });
+        </script>
+        <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     </head>
   <body>
+
     <div class="content">
 
       <h2>Bitcoin Address Generation using Elliptic Curve Cryptography</h2>
@@ -28,13 +35,13 @@
       <h3>Step by step:</h3>
 
       <ol>
-        <li>For the bitcoin protocall, the elliptic curve of the equation <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span> is defined over the integers 0 to (p - 1) where <span class="math">p= 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</span>.</li>
+        <li>For the bitcoin protocall, the elliptic curve of the equation \(y^2 \equiv x^3 + 7 \pmod{p}\) is defined over the integers \((0 \dots p - 1)\) where \(p= 2^{356}-2^{32}-2^9-2^7- 2^6-2^4-1\).</li>
 
-        <li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
+        <li>A starting point \(A\) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
 
         <li>A private key is chosen. This is a random 256 bit number.</li>
 
-        <li>Using elliptic curve multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in another point on the elliptic curve, which is the public key.</li>
+        <li>Using elliptic curve multiplication \(\bmod{p}\), the starting point \(A\), is multiplied by the private key. This multiplication results in another point on the elliptic curve, which is the public key.</li>
       </ol>
 
       <p>
@@ -49,13 +56,13 @@
         1.) What is an elliptic curve? What does it look like over the real numbers?
       </h3>
       <p>
-        An elliptic curve is a curve defined by the function <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span>. When graphed over the real numbers, these curves can take on many shapes based on how a and b are chosen. Here are a few examples of how elliptic curves look:
+        An elliptic curve is a curve defined by the function \(y^2=x^3+ax+b\). When graphed over the real numbers, these curves can take on many shapes based on how \(a\) and \(b\) are chosen. Here are a few examples of how elliptic curves look:
       </p>
 
       (show pics here)
 
       <p>
-        For the Bitcoin protocol, there is one specific elliptic curve on which ALL users rely. You may have heard of it: <a href="https://en.bitcoin.it/wiki/Secp256k1" target="_blank">secp256k1</a>, a curve developed and standardized by NIST. It is defined by the equation <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span>.
+        For the Bitcoin protocol, there is one specific elliptic curve on which ALL users rely. You may have heard of it: <a href="https://en.bitcoin.it/wiki/Secp256k1" target="_blank">secp256k1</a>, a curve developed and standardized by NIST. It is defined by the equation \(y^2=x^3+7\).
       </p>
 
       <p>
@@ -69,11 +76,11 @@
       </h3>
 
       <p>
-        Given a prime number <span class="math">p</span>, the prime field <span class="math">F<sub>p</sub></span> consists of the set of integers from <span class="math">0 to (p-1)</span> under the operations of mod-p addition and multiplication. For our purposes, just think of this as the set of integers from <span class="math">0 to (p-1)</span>. For example, <span class="math">F<sub>7</sub></span> is the set of integers <span class="math">{0,1,2,3,4,5,6}</span>.
+        Given a prime number \(p\), the prime field \(F_p\) consists of the set of integers from \((0 \dots p-1)\) under the operations of \(\bmod{p}\) addition and multiplication. For our purposes, just think of this as the set of integers from \((0 \dots p-1)\). For example, \(F_7\) is the set of integers \((0,1,2,3,4,5,6)\).
       </p>
 
       <p>
-        The prime field <span class="math">F<sub>p</sub></span> used for key generation in the bitcoin protocol is the set of integers from 0 to <span class="math">(p - 1)</span>, where <span class="math">p = 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</span> (about half yo mama's weight in kg).
+        The prime field \(F_p\) used for key generation in the bitcoin protocol is the set of integers from \((0 \dots p-1)\), where $$p= 2^{356}-2^{32}-2^9-2^7- 2^6-2^4-1$$ (about half yo mama's weight in kg).
       </p>
 
       <h3>
@@ -81,53 +88,53 @@
       </h3>
 
       <p>
-        When plotting over real numbers, we solved the equation <span class="math">y^2 = x^3 + 7</span> for all real numbers. In other words, we check every x value to see if we can solve for y. We then plot these (x, y) pairs on the chart to create the continuous curve you saw above.
+        When plotting over real numbers, we solved the equation \(y^2=x^3+7\) for all real numbers. In other words, we check every \(x\) value to see if we can solve for \(y\). We then plot these \((x, y)\) pairs on the chart to create the continuous curve you saw above.
       </p>
 
       <p>
-        In contrast, when plotting over a prime field, we check for solutions to <span class="math">y^2 = x^3 + 7 <em> mod</em> p</span> only for integers in <span class="math">F<sub>p</sub></span>. In other words, we use every x value in <span class="math">F<sub>p</sub></span> (integers from 0 to (p-1)) and solve <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7<em> mod</em> p</span> for y. If y is also in <span class="math">F<sub>p</sub></span>, then this (x, y) pair is a solution to the equation. <em>Note: not every element in the prime field will result in a solution to the elliptic curve equation.</em>
+        In contrast, when plotting over a prime field, we check for solutions to \(y^2 \equiv x^3 + 7 \pmod{p}\) only for integers in \(F_p\). In other words, we use every \(x\) value in \(F_p\) (integers from \((0 \dots p-1)\) and solve \(y^2 \equiv x^3 + 7 \pmod{p}\) for \(y\). If \(y\) is also in \(F_p\), then this \((x, y)\) pair is a solution to the equation. <em>Note: not every element in the prime field will result in a solution to the elliptic curve equation.</em>
       </p>
 
       <p>
-        The set of points in the prime field <span class="math">F<sub>p</sub></span> looks like this. The x and y coordinates each range from <span class="math">0 to (p-1)</span>:
+        The set of points in the prime field \(F_p\) looks like this. The \((x, y)\) coordinates each range from \((0 \dots p-1)\):
       </p>
 
       <p>
         (0,0) (0,1) ... (0,p-1)<br>
-        (1,0) ...........................<br>
+        (1,0) ............................<br>
         .......................................<br>
         .......................................<br>
         (p-1,0)........ (p-1,p-1)<br>
       </p>
 
       <p>
-        As an example, lets take the curve: <span class="math">y<sup>2</sup> = x<sup>3</sup> + x <em> mod</em> 23</span>. <span class="math"><em> mod</em> 23</span> indicates we are plotting over the prime field F<sub>23</sub> which is the set of integers from 0 to 22. Lets examine one coordinate pair in this field: (11,10)
+        As an example, lets take the curve: \(y^2 \equiv x^3+x \pmod{23}\). \(\bmod{23}\) indicates we are plotting over the prime field \(F_{23}\) which is the set of integers from \((0 \dots 22)\). Lets examine one coordinate pair in this field: \((11,10)\)
       </p>
 
       <ul>
-        <li>y<sup>2</sup> = x<sup>3</sup> + x mod 23</li>
-        <li>10<sup>2</sup> = 11<sup>3</sup> + 11 mod 23</li>
-        <li>100 = 1331 + 1 mod 23</li>
-        <li>100 = 1332 mod 23</li>
-        <li>8 = 8 mod 23</li>
-        <li>because (100 % 23 == 8) and (1332 % 23 == 8) where '%' is the modulo operation</li>
+        <li>\(y^2 \equiv x^3+x \pmod{23}\)
+        <li>\(10^2 \equiv 11^3+11\pmod{23}\)</li>
+        <li>\(100 \equiv 1331+1\pmod{23}\)</li>
+        <li>\(100 \equiv 1332 \pmod{23}\)</li>
+        <li>\(8=8\pmod{23}\)</li>
+        <li>because \(100 \pmod{23} \equiv 8\) and \(1332 \pmod{23} \equiv 8\)</li>
       </ul>
 
-      <p>As we have shown, the coordinate pair (11,10) from F<sub>23</sub> satisifies the elliptic curve equation. Therefore, this point would be included in the graph of our curve over F<sub>23</sub></p>
+      <p>As we have shown, the coordinate pair \((11,10)\) from \(F_{23}\) satisifies the elliptic curve equation. Therefore, this point would be included in the graph of our curve over \(F_{23}\)</p>
 
       <p>
-        In contrast, lets take a different coordinate pair: (2,8)
+        In contrast, lets take a different coordinate pair: \((2,8)\)
       </p>
 
       <ul>
-        <li>y<sup>2</sup> = x<sup>3</sup> + x mod 23</li>
-        <li>2<sup>2</sup> = 8<sup>3</sup> + 8 mod 23</li>
-        <li>4 = 512 + 8 mod 23</li>
-        <li>4 = 520 mod 23</li>
-        <li>4 != 14 mod 23</li>
+        <li>\(y^2 \equiv x^3+x \pmod{23}\)</li>
+        <li>\(2^2 \equiv 8^3 + 8 \pmod{23}\)</li>
+        <li>\(4 \equiv 512 + 8 \pmod{23}\)</li>
+        <li>\(4 \equiv 520 \pmod{23}\)</li>
+        <li>\(4 \not\equiv 14 \pmod{23}\)</li>
       </ul>
 
-      <p>As we have shown, the coordinate pair (2,8) from F<sub>23</sub> does not satisify the elliptic curve equation. Therefore, this point would not be included in the graph of our curve over F<sub>23</sub></p>
+      <p>As we have shown, the coordinate pair \((2,8)\) from \(F_{23}\) does not satisify the elliptic curve equation. Therefore, this point would not be included in the graph of our curve over \(F_{23}\)</p>
 
 
       <p>
@@ -135,7 +142,7 @@
       </p>
 
       <p>
-        Pictured below is an elliptic curve graphed over a prime field. You can see that for each x which yields a solution to the curve modp, there is also another corresponding point for the same x! These pairings are reflections of eachother over the line y=p/2, i.e. the graph is symmetric about the line y=p/2.
+        Pictured below is an elliptic curve graphed over a prime field. You can see that for each \(x\) which yields a solution to the curve \(\mod{p}\), there is also another corresponding point for the same \(x\)! These pairings are reflections of eachother over the line \(y=\frac{p}{2}\), i.e. the graph is symmetric about the line \(y=\frac{p}{2}\).
       </p>
 
       <h3>
@@ -143,55 +150,55 @@
       </h3>
 
       <p>
-        Elliptic curve addition is an operation that is defined specifically for elliptic curves. First we will describe elliptic curve addition over the real numbers, then we will describe elliptic curve addition over <span class="math">F<sub>p</sub></span>. Addition of two distinct points (A and B) on an elliptic curve can be described in the following steps:
+        Elliptic curve addition is an operation that is defined specifically for elliptic curves. First we will describe elliptic curve addition over the real numbers, then we will describe elliptic curve addition over \(F_p\). Addition of two distinct points \(A\) and \(B\) on an elliptic curve can be described in the following steps:
       </p>
       <ol>
-        <li>Connect A and B with a straight line.</li>
-        <li>This line will intersect a third place on the elliptic curve. We'll call it C. </li>
-        <li>Take C and reflect it across the y-axis.</li>
-        <li>The <strong>point</strong> resulting from reflecting C across the y-axis is the result of the addition!</li>
+        <li>Connect \(A\) and \(B\) with a straight line.</li>
+        <li>This line will intersect a third place on the elliptic curve. We'll call it \(C\). </li>
+        <li>Take \(C\) and reflect it across the y-axis.</li>
+        <li>The <strong>point</strong> resulting from reflecting \(C\) across the y-axis is the result of the addition!</li>
       </ol>
 
       <p>I want to reiterate this: <strong>the result of elliptic curve addition is another point on the curve.</strong> This can all be tough to understand, so here is an animation which gives you an idea of how this works!</p>
 
-      <p>But, what if we want to add a point to itself? To do this, it's helpful to look again at two distinct points, A and B, connected by a line. If we gradually move A and B closer and closer to each other, we see that the line connecting the two points becomes the tangent curve to a single point, the meeting point between the two points.</p>
+      <p>But, what if we want to add a point to itself? To do this, it's helpful to look again at two distinct points, \(A\) and \(B\), connected by a line. If we gradually move \(A\) and \(B\) closer to each other, we see that the line connecting the two points becomes the tangent curve to a single point, the meeting point between the two points.</p>
 
-      <p>Based on this observation, we can see that to add a point A to itself, the 'line connecting two distinct points' becomes the tangent line to the point A on the elliptic curve. Then, we find the where the tangent line intersects the curve, and continue as above. See below for an animation.</p>
+      <p>Based on this observation, we can see that to add a point \(A\) to itself, the 'line connecting two distinct points' becomes the tangent line to the point \(A\) on the elliptic curve. Then, we find the where the tangent line intersects the curve, and continue as above. See below for an animation.</p>
 
-      <p>Here it is also important to mention that added to the field Fp is a "point at infinity". This point is reached when adding two points (P and Q) together which have the same x coordinate but different y coordinates. See below:</p>
+      <p>Here it is also important to mention that added to the field \(F_p\) is a "point at infinity". This point is reached when adding two points \(P\) and \(Q\) together which have the same \(x\) coordinate but different \(y\) coordinates. See below:</p>
 
-      <p>This point acts as the identity for Elliptic Curve addition. That is, P + Q = &infin and P + &infin = P.</p>
+      <p>This point acts as the identity for Elliptic Curve addition. That is, \(P + Q = \infty\) and \(P + \infty = P\).</p>
 
-      <p>Over a prime field <span class="math">F<sub>p</sub></span> addition is done in much the same way. </p>
+      <p>Over a prime field \(F_p\) addition is done in much the same way. </p>
 
       <h3>
         4.) Elliptic Curve Addition over a prime field.
       </h3>
 
-      <p>First, it is good to remember exactly what a prime field is. A prime field F<sub>p</sub> consists of the integers from 0 to (p-1). So, the graph of an elliptic curve over a prime field is a FINITE number of points, in contrast with a graph over the real numbers which contains an infinite number of points. </p>
+      <p>First, it is good to remember exactly what a prime field is. A prime field \(F_p\) consists of the integers from \((0 \dots p-1)\). The graph of an elliptic curve over a prime field is a FINITE number of points, in contrast with a graph over the real numbers which contains an infinite number of points. </p>
 
       <p>To perform elliptic curve addition over a prime field, we can follow the same steps as outlined above. However, a few concepts may not intuitively translate from reals to prime fields: do we take the slope mod p? When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? </p>
 
-      <p>Question one: do we take the slope mod p? Well, what is a slope? Slope is just the change in y given a change in x of 1. We increase x by some amount, how much do we need to add/subtract from y to have an (x,y) coordinate which satisfies our equation? Because addition is mod p, if we increase x the most which y will change is (p-1). This is because in modp, adding anything >=p is equivalent to adding some integer between 0 and (p-1).</p>
+      <p>Question one: do we take the slope \(\bmod{p}\)? Well, what is a slope? Slope is just the change in \(y\) given a change in \(x\) of 1. We increase \(x\) by some amount, how much do we need to add/subtract from \(y\) to have an \((x,y)\) coordinate which satisfies our equation? Because addition is \(\bmod{p}\), if we increase \(x\) the most which \(y\) will change is \(p-1\). This is because in \(\bmod{p}\), adding anything greater than \(p\) is equivalent to adding some integer between \(0 \dots p-1\).</p>
 
-      <p> Question two: When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point P? Remember, not every (x,y) pair on the prime field will be a solution to the equation <br> <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span><strong>I can't figure this out right now....</strong></p>
+      <p> Question two: When we connect the two points we are adding with a line, how can we be sure that the line connects with a third point \(P\)? Remember, not every \((x,y)\) pair on the prime field will be a solution to the equation \(y^2 \equiv x^3+7\) I can't figure this out right now....</strong></p>
 
       <h3>Equations!</h3>
-      <p>Given points P(p<sub>x</sub>, p<sub>y</sub>), Q(q<sub>x</sub>, q<sub>y</sub>), and R(r<sub>x</sub>, r<sub>y</sub>), the steps for the elliptic curve addition of P + Q = R on the curve <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b mod p</span> are as follows:</p>
+      <p>Given points \(P(p_x, p_y)\), \(Q(q_x, q_y)\), and \(R(r_x, r_y)\), the steps for the elliptic curve addition of \(P + Q = R\) on the curve \(y^2 \equiv x^3+ax+b \pmod{p}\) are as follows:</p>
       <ol>
 
       <li>To get the slope, there are two scenarios.</li>
 
         <ol>
-         <li>1. If the P != Q,  we compute <span class="math">s = (q<sub>y</sub> - p<sub>y</sub>)/(q<sub>x</sub> - p<sub>x</sub>) mod p</span></li>
-         <li>If P = Q, we compute the slope of the tangent by taking taking the derivative of the elliptic curve equation at (p<sub>x</sub>, p<sub>y</sub>) and solving for dy/dx. So,<span class="math">s = (3p<sub>x</sub><sup>2</sup> + b)/(2p<sub>y</sub>) mod p</span></li>
+         <li>1. If \(P \neq Q\),  we compute \(s = \frac{q_y - p_y}{q_x-p_x} \pmod{p}\)</li>
+         <li>If \(P = Q\), we compute the slope of the tangent by taking taking the derivative of the elliptic curve equation at \((p_x, p_y)\) and solving for \(\frac{dy}{dx}\). So, \(s = \frac{3p_x^2 + b}{2p_y} \pmod{p}\)</li>
         </ol>
 
       <li>To get the coordinates of R, we now compute:</li>
         <ol>
-          <li><span class="math">r<sub>x</sub> = s<sup>2</sup> - p<sub>x</sub> - p<sub>y</sub> mod p</span></li>
+          <li>\(r_x = s^2 - p_x - p_y \pmod{p}\)</li>
 
-          <li><span class="math">r<sub>y</sub> = s * (p<sub>x</sub> - r<sub>x</sub>) - p<sub>y</sub> mod p</span></li>
+          <li>\(r_y = s * (p_x - r_x) - p_y \pmod{p}\)</li>
         </ol>
 
       </ol>
@@ -199,64 +206,67 @@
       <p>Some simple algebra will verify the coordinate equations above:</p>
       <ol>
         <li>
-          <p>r<sub>x</sub> : We want to find the x value at the point of intersection between the equation of the elliptic curve <span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span> and the line <span class="math">y = sx + k</span>(the line defined by point P and the calculated slope 's').</p>
+          <p>\(r_x\) : We want to find the \(x\) value at the point of intersection between the equation of the elliptic curve \(y^2 = x^3 + ax + b\) and the line \(y = sx + k\) (the line defined by point \(P\) and the calculated slope \(s\)).</p>
 
           <p>
-          We set the equations equal to each other, and solve for 0. From there, we know that this 3rd order polynomial equation has three zero's (the three points of intersection on the graph), two of which are p<sub>x</sub> and q<sub>x</sub>. We must now solve for the last zero r<sub>x</sub> by setting the equation equal to the factored form of the equation.
+          We set the equations equal to each other, and solve for \(0\). From there, we know that this \(3^{rd}\) order polynomial equation has three zero's (the three points of intersection on the graph), two of which are \(p_x\) and \(q_x\). We must now solve for the last zero \(r_x\) by setting the equation equal to the factored form of the equation.
           </p>
 
-          <p><span class="math">y<sup>2</sup> = x<sup>3</sup> + ax + b</span> and  <span class="math">y = sx + k</span></p>
+          <ul>
+            <li>\(y^2 = x^3 + ax + b\) and  \(y = sx + k\)</li>
 
-          <p><span class="math">y<sup>2</sup> = (sx + k)<sup>2</sup> = x<sup>3</sup> + ax + b</span></p>
+            <li>\(y^2 = (sx + k)^2 = x^3 + ax + b\)</li>
 
-          <p><span class="math"> 0 = x<sup>3</sup> + ax + b - (sx + k)<sup>2</sup> = (x - p<sub>x</sub>)(x - q<sub>x</sub>)(x - r<sub>x</sub>)</span></p>
+            <li>\(0 = x^3 + ax + b - (sx + k)^2 = (x - p_x)(x - q_x)(x - r_x)\)</li>
 
-          <p>Multiplying out the each side, we know that the coefficents to x<sup>2</sup> should be equal. On the left side, the coefficient is -s<sup>2</sup>, and on the right the coefficient -(p<sub>x</sub> + q<sub>x</sub> + r<sub>x</sub>). Setting these two equal and solving for r<sub>x</sub> : </p>
+            <li>Multiplying out the each side, we know that the coefficents of \(x^2\) should be equal. On the left side, the coefficient is \(-s^2\), and on the right the coefficient \(-(p_x + q_x + r_x)\). Setting these two equal and solving for \(r_x\) : </li>
 
-          <p><span class="math">r<sub>x</sub> = s<sup>2</sup> - p<sub>x</sub> - q<sub>x</sub></span></p>
+            <li>\(r_x = s^2 - p_x - q_x\)</li>
+          </ul>
+
         </li>
 
         <li>
-          <p>r<sub>y</sub> : Now, we can plug r<sub>x</sub> for x into the point slope form of the equation for the line through P and Q: </p>
-          <p><span class="math">
-            y - p<sub>y</sub> = s(x - p<sub>x</sub>)
-            <br>
-            r<sub>y</sub> = s(r<sub>x</sub> - p<sub>x</sub>) + p<sub>y</sub>
-
-          </span></p>
+          <p>\(r_y\) : Now, we can plug \(r_x\) for \(x\) into the point slope form of the equation for the line through \(P\) and \(Q\): </p>
+          <ul>
+            <li>\(y - p_y = s\times(x - p_x)\)</li>
+            <li>\(r_y = s\times(r_x - p_x) + p_y\)</li>
+          </ul>
 
         </li>
       </ol>
 
       <h3>5. Elliptic Curve Multipation, Private Keys, and Public Keys</h3>
 
-      <p>Elliptic Curve Multiplication is defined exactly how you would expect. That is, for a point P being multiplied k times: </p>
+      <p>Elliptic Curve Multiplication is defined exactly how you would expect. That is, for a point \(P\) being multiplied \(k\) times: </p>
 
-      <p><span class="math">k * P = P + P + P + P....(k times) modp</span></p>
+      <p>\(k \times P = P + P + P + P \dots +P \pmod{p}\)</span></p>
 
       <p>Do you remember our steps from the beginning? I will restate them below: </p>
 
       <ol>
-        <li>For the bitcoin protocol, the elliptic curve of the equation <span class="math">y<sup>2</sup> = x<sup>3</sup> + 7</span> is defined over the prime field F<sub>p</sub> where <span class="math">p= 2<sup>356</sup> - 2<sup>32</sup> - 2<sup>9</sup> - 2<sup>7</sup> - 2<sup>6</sup> - 2<sup>4</sup> - 1</span>.</li>
+        <li>For the bitcoin protocol, the elliptic curve of the equation \(y^2 = x^3 + 7\) is defined over the prime field \(F_p\) where \(p = 2^{356} - 2^{32} - 2^9 - 2^7 - 2^6 - 2^4 - 1\).</li>
 
-        <li>A starting point (A) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
+        <li>A starting point \(A\) on the elliptic curve is chosen which will be common to all bitcoin addresses.</li>
 
         <li>A private key is chosen. This is a random 256 bit number.</li>
 
-        <li>Using Elliptic Curve Multiplication mod(p), the starting point (A), is multiplied by the private key. This multiplication results in another point on the elliptic curve, which is the public key.</li>
+        <li>Using Elliptic Curve Multiplication \(\bmod{p}\), the starting point \(A\), is multiplied by the private key. This multiplication results in another point on the elliptic curve, which is the public key.</li>
       </ol>
 
-      <p>One quick note: the starting point A is point which is the same for ALL bitcoin client users. This point: <span class="math">(55066263022277343669578718895168534326250603453777594175500187360389116729240, 32670510020758816978083085130507043184471273380659243275938904335757337482424)</span> was chosen because it is a 'generator' of the group formed under Elliptic Curve Multiplication mod p. That is a bit of abstract algebra for ya, which we learn about in a different post. It is a sufficient to say that by performing elliptic curve multiplications on the point A, it is possible for the result to be every single point on the prime field for which the curve is defined.</p>
+      <p>One quick note: the starting point \(A\) is point which is the same for ALL bitcoin client users. This point: \((55066263022277343669578718895168534326250603453777594175500187360389116729240, 32670510020758816978083085130507043184471273380659243275938904335757337482424)\) was chosen because it is a 'generator' of the group formed under Elliptic Curve Multiplication \(\bmod{p}\). That is a bit of abstract algebra for ya, which we learn about in a different post. It is a sufficient to say that by performing elliptic curve multiplications on the point \(A\), it is possible for the result to be every single point on the prime field for which the curve is defined.</p>
 
       <p>Looking at the steps above, it seems pretty simple to calculate a public key. In fact, almost too simple - wasn't this supposed to be cryptographically secure?</p>
 
-      <p>Well, it turns out the Elliptic Curve Multiplication is really, really, really hard to reverse. That is given X, p, and a starting point A, where: <span class="math"> X = k*A mod p</span> it is virutally impossible to find k in a reasonable amount of time.</p>
-
-
+      <p>Well, it turns out the Elliptic Curve Multiplication is really, really, really hard to reverse. That is, given \(X, p, A\) where: \(X \equiv k \times A \pmod{p}\) it is virutally impossible to find \(k\) in a reasonable amount of time.</p>
 
 
       <h3>6. Getting to the point...</h3>
     </div>
   </body>
 </html>
+
+<!-- we can use jQuery lightbox's to show the images in a stylish way when clicked.
+
+ -->
 
