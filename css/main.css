@@ -8,3 +8,18 @@
 ul {
   list-style-type:none;
 }
+
+
+.graph {
+  width: 150px;
+  height: 150px;
+  border:1px solid #ccc;
+  border-radius:5px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#secp256k1{
+  width: 200px;
+  height: 200px;
+}
